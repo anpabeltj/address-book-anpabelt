@@ -27,3 +27,5 @@ let dataContacts = [
     notes: "My cousin",
   },
 ];
+
+console.log(dataContacts);
