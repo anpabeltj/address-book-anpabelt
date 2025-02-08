@@ -1,0 +1,8 @@
+{
+  // set as "true" to run 'prettier' last not first
+
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
