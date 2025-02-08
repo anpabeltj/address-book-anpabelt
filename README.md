@@ -1,10 +1,10 @@
-# 📬 Address Book Project
+# 📬 Address Book
 
 ## Overview
 
-The **Address Book Project** is a simple yet powerful application designed to help users manage their contacts efficiently. It provides an intuitive interface for storing, organizing, and retrieving contact information, making it a convenient tool for personal and professional use.
+The **Address Book** is a simple yet powerful application designed to help users manage their contacts efficiently. It provides an intuitive interface for storing, organizing, and retrieving contact information, making it a convenient tool for personal and professional use.
 
-You can access it here [address-book-anpabelt.com](https://test.com)
+You can access it here [address-book.anpabelt.com](https://address-book.anpabelt.com)
 
 ## 🤖 Features
 
@@ -47,4 +47,10 @@ You can access it here [address-book-anpabelt.com](https://test.com)
 
 ## Pseudocode
 
+```py
+
+```
+
 ## Flowchart
+
+![Flowchart](assets/flowchart.png)
