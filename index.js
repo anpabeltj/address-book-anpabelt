@@ -43,4 +43,22 @@ let dataContacts = [
   },
 ];
 
-console.log(dataContacts);
+for (let index = 0; index < dataContacts.length; index++) {
+  const contact = dataContacts[index];
+
+  console.log(
+    `#${contact.id}
+    Full Name: ${contact.fullName}
+    Email: ${contact.email}
+    Phone: ${contact.phoneNumber}
+    Birth Date: ${contact.birthDate}
+    Notes: ${contact.notes}
+    Labels: ${contact.labels.join(", ")}
+    ${
+      contact.address
+        ? `Address: ${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.postalCode}, ${contact.address.country}`
+        : ""
+    }
+    `
+  );
+}
