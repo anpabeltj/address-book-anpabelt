@@ -1,4 +1,23 @@
-let dataContacts = [
+type Contact = {
+  id: number;
+  avatarUrl?: string;
+  url?: string;
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  labels: string[];
+  birthDate?: Date;
+  notes?: string | null;
+  address?: {
+    street: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+  };
+};
+
+let storeContacts: Contact[] = [
   {
     id: 1,
     avatarUrl: "https://github.com/anpabeltj.png",
@@ -69,4 +88,4 @@ let dataContacts = [
   },
 ];
 
-console.log(dataContacts);
+console.log(storeContacts);
