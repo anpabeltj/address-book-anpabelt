@@ -7,25 +7,41 @@
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
   </head>
   <body>
-    <header class="p-8">
+    <header class="p-8 bg-gray-100">
       <h1>Welcome, Anpabelt</h1>
     </header>
 
     <!-- Aside -->
 
-    <section id="sidebar-menu" class="flex flex-wrap sm:flex-nowrap gap-8 p-4">
-      <aside class="bg-gray-400 text-black-200 p-2 rounded-md w-full max-w-48">
-        <h2>test</h2>
-        <h2>test</h2>
-      </aside>
-      <div class="grid gap-8 md:grid-cols-2 p-4">
-        <h2>Contacts</h2>
-      </div>
-    </section>
-
     <!-- Main -->
 
-    <main></main>
+    <main id="site-content" class="m-8 max-w-8xl">
+      <div class="p-16">
+        <div class="flex justify-between items-center p-16">
+          <h2>Contacts</h2>
+
+          <form id="search-contact" method="get" class="p-16">
+            <div class="w-10 flex border-gray-400">
+              <input id="search-input" placeholder="Search here" class="border-2 border-black-400 rounded-md" type="text" />
+            </div>
+          </form>
+        </div>
+
+        <table class="w-full items-center">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone Number</th>
+              <th>Label</th>
+              <th>Birthday</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+        </table>
+        <hr class="my-1 mx-2" />
+      </div>
+    </main>
 
     <!-- Footer -->
     <footer id="footer" class="bg-gray-600 bg-gradient-to-t from-retro-950 to-retro-550 flex flex-col relative justify-center text-center items-center mt-20 p-4">
