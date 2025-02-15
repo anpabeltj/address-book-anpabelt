@@ -6,6 +6,18 @@ The **Address Book** is a simple yet powerful application designed to help users
 
 You can access it here [address-book-anpabelt.com](https://test.com)
 
+## Development
+
+```sh
+bun src/index.ts
+```
+
+## Build (Production)
+
+```sh
+bun build src/index.ts --outdir=dist
+```
+
 ## 🤖 Features
 
 ### 1. Contact List

@@ -1,11 +1,11 @@
 type Contact = {
   id: number;
-  avatarUrl?: string;
-  url?: string;
   fullName: string;
   email: string;
   phoneNumber: string;
-  labels: string[];
+  avatarUrl?: string;
+  url?: string;
+  labels?: string[];
   birthDate?: Date;
   notes?: string | null;
   address?: {
@@ -17,13 +17,13 @@ type Contact = {
   };
 };
 
-let storeContacts: Contact[] = [
+let dataContacts: Contact[] = [
   {
     id: 1,
-    avatarUrl: "https://github.com/anpabeltj.png",
     fullName: "Anpabelt Trah Javala",
     email: "anpabelt@gmail.com",
     phoneNumber: "+60142948290",
+    avatarUrl: "https://github.com/anpabeltj.png",
     labels: ["friend", "neighbour"],
     birthDate: new Date("2003-6-25"),
     notes: "Studied together at the university",
@@ -37,10 +37,10 @@ let storeContacts: Contact[] = [
   },
   {
     id: 2,
-    avatarUrl: "https://github.com/michaeltan.png",
     fullName: "Michael Tan",
     email: "michaeltan@gmail.com",
     phoneNumber: "+60176667788",
+    avatarUrl: "https://github.com/michaeltan.png",
     labels: ["mentor", "teacher"],
     birthDate: new Date("1975-12-05"),
     notes: "Former lecturer in data science",
@@ -54,10 +54,10 @@ let storeContacts: Contact[] = [
   },
   {
     id: 3,
-    avatarUrl: "https://github.com/muhammadarif.png",
     fullName: "Muhammad Arif",
     email: "muh.arif92@yahoo.com",
     phoneNumber: "+60172658963",
+    avatarUrl: "https://github.com/muhammadarif.png",
     labels: ["family", "cousin"],
     birthDate: new Date("1992-11-25"),
     notes: "Cousin from father's side",
@@ -71,10 +71,10 @@ let storeContacts: Contact[] = [
   },
   {
     id: 4,
-    avatarUrl: "https://github.com/emmawong.png",
     fullName: "Emma Wong",
     email: "emma.wong54@gmail.com",
     phoneNumber: "+60195543217",
+    avatarUrl: "https://github.com/emmawong.png",
     labels: ["university friend", "traveler"],
     birthDate: new Date("1995-12-10"),
     notes: "Travel buddy during university",
@@ -86,6 +86,12 @@ let storeContacts: Contact[] = [
       country: "Malaysia",
     },
   },
+  {
+    id: 5,
+    fullName: "Example Person",
+    email: "example@example.com",
+    phoneNumber: "+60123456789",
+  },
 ];
 
-console.log(storeContacts);
+console.log(dataContacts);
