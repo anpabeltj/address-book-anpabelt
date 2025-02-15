@@ -94,4 +94,15 @@ let dataContacts: Contact[] = [
   },
 ];
 
-console.log(dataContacts);
+function renderContacts() {
+  for (let index = 0; index < dataContacts.length; index++) {
+    const contact = dataContacts[index];
+
+    console.log(`Name: ${contact.fullName}
+      Email: ${contact.email}
+      TODO: Continue
+      `);
+  }
+}
+
+renderContacts();
