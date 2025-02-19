@@ -5,16 +5,29 @@ type Contact = {
   phoneNumber: string;
   avatarUrl?: string;
   url?: string;
-  labels?: string[];
   birthDate?: Date;
   notes?: string | null;
-  address?: {
-    street: string;
-    city: string;
-    state: string;
-    postalCode: string;
-    country: string;
-  };
+  address?: Address;
+  labels?: Label[];
+};
+
+type InputContact = {
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+};
+
+type Address = {
+  street: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+};
+
+type Label = {
+  name: string;
+  color: string;
 };
 
 let dataContacts: Contact[] = [
@@ -24,7 +37,6 @@ let dataContacts: Contact[] = [
     email: "anpabelt@gmail.com",
     phoneNumber: "+60142948290",
     avatarUrl: "https://github.com/anpabeltj.png",
-    labels: ["friend", "neighbour"],
     birthDate: new Date("2003-6-25"),
     notes: "Studied together at the university",
     address: {
@@ -34,6 +46,10 @@ let dataContacts: Contact[] = [
       postalCode: "56000",
       country: "Malaysia",
     },
+    labels: [
+      { name: "friend", color: "blue" },
+      { name: "neighbour", color: "green" },
+    ],
   },
   {
     id: 2,
@@ -41,7 +57,6 @@ let dataContacts: Contact[] = [
     email: "michaeltan@gmail.com",
     phoneNumber: "+60176667788",
     avatarUrl: "https://github.com/michaeltan.png",
-    labels: ["mentor", "teacher"],
     birthDate: new Date("1975-12-05"),
     notes: "Former lecturer in data science",
     address: {
@@ -51,6 +66,10 @@ let dataContacts: Contact[] = [
       postalCode: "63000",
       country: "Malaysia",
     },
+    labels: [
+      { name: "mentor", color: "blue" },
+      { name: "teacher", color: "green" },
+    ],
   },
   {
     id: 3,
@@ -58,7 +77,6 @@ let dataContacts: Contact[] = [
     email: "muh.arif92@yahoo.com",
     phoneNumber: "+60172658963",
     avatarUrl: "https://github.com/muhammadarif.png",
-    labels: ["family", "cousin"],
     birthDate: new Date("1992-11-25"),
     notes: "Cousin from father's side",
     address: {
@@ -68,6 +86,10 @@ let dataContacts: Contact[] = [
       postalCode: "80050",
       country: "Malaysia",
     },
+    labels: [
+      { name: "family", color: "red" },
+      { name: "cousin", color: "green" },
+    ],
   },
   {
     id: 4,
@@ -75,7 +97,6 @@ let dataContacts: Contact[] = [
     email: "emma.wong54@gmail.com",
     phoneNumber: "+60195543217",
     avatarUrl: "https://github.com/emmawong.png",
-    labels: ["university friend", "traveler"],
     birthDate: new Date("1995-12-10"),
     notes: "Travel buddy during university",
     address: {
@@ -85,6 +106,10 @@ let dataContacts: Contact[] = [
       postalCode: "75000",
       country: "Malaysia",
     },
+    labels: [
+      { name: "university friend", color: "blue" },
+      { name: "traveler", color: "orange" },
+    ],
   },
   {
     id: 5,
@@ -95,24 +120,51 @@ let dataContacts: Contact[] = [
 ];
 
 function renderContacts() {
-  for (let index = 0; index < dataContacts.length; index++) {
-    const contact = dataContacts[index];
-    const address = contact.address ? `${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.postalCode}, ${contact.address.country}` : "No address available";
-
+  for (const contact of dataContacts) {
     console.log(`
 Name: ${contact.fullName}
 Email: ${contact.email}
 Phone Number: ${contact.phoneNumber}
 Avatar: ${contact.avatarUrl}
-Labels: ${contact.labels}
 Birth Date: ${contact.birthDate}
-Notes: ${contact.notes}
-Address: ${address}
+Notes: ${contact.notes}`);
 
-`);
+    if (contact.address) {
+      console.log(
+        `Address: ${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.postalCode}, ${contact.address.country}`
+      );
+    }
+
+    if (contact.labels && contact.labels?.length > 0) {
+      console.log(`Labels:`);
+      for (
+        let labelIndex = 0;
+        labelIndex < contact.labels.length;
+        labelIndex++
+      ) {
+        const label = contact.labels[labelIndex];
+        console.log(`- ${label.name}`);
+      }
+    }
   }
 }
 
-// TODO: Continue
+// QUIZ: Level 1
+function searchContactByName(name: string) {}
+
+// QUIZ: Level 2
+function searchContactByKeyword(keyword: string) {}
+
+// QUIZ: Level 3
+function deleteContactById(id: number) {}
+
+// QUIZ: Level 4
+function addContact(contact: InputContact) {}
+
+// QUIZ: Level 5
+function updateContact(contact: InputContact) {}
+
+// QUIZ: Level 10
+function calculateAverageAge() {}
 
 renderContacts();
