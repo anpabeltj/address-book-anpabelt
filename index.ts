@@ -11,6 +11,12 @@ type Contact = {
   labels?: Label[];
 };
 
+type InputContact = {
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+};
+
 type Address = {
   street: string;
   city: string;
@@ -114,9 +120,7 @@ let dataContacts: Contact[] = [
 ];
 
 function renderContacts() {
-  for (let index = 0; index < dataContacts.length; index++) {
-    const contact = dataContacts[index];
-
+  for (const contact of dataContacts) {
     console.log(`
 Name: ${contact.fullName}
 Email: ${contact.email}
@@ -144,5 +148,23 @@ Notes: ${contact.notes}`);
     }
   }
 }
+
+// QUIZ: Level 1
+function searchContactByName(name: string) {}
+
+// QUIZ: Level 2
+function searchContactByKeyword(keyword: string) {}
+
+// QUIZ: Level 3
+function deleteContactById(id: number) {}
+
+// QUIZ: Level 4
+function addContact(contact: InputContact) {}
+
+// QUIZ: Level 5
+function updateContact(contact: InputContact) {}
+
+// QUIZ: Level 10
+function calculateAverageAge() {}
 
 renderContacts();
