@@ -97,13 +97,22 @@ let dataContacts: Contact[] = [
 function renderContacts() {
   for (let index = 0; index < dataContacts.length; index++) {
     const contact = dataContacts[index];
+    const address = contact.address ? `${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.postalCode}, ${contact.address.country}` : "No address available";
 
     console.log(`
 Name: ${contact.fullName}
 Email: ${contact.email}
-TODO: Continue
+Phone Number: ${contact.phoneNumber}
+Avatar: ${contact.avatarUrl}
+Labels: ${contact.labels}
+Birth Date: ${contact.birthDate}
+Notes: ${contact.notes}
+Address: ${address}
+
 `);
   }
 }
+
+// TODO: Continue
 
 renderContacts();
