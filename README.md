@@ -15,7 +15,7 @@ bun src/index.ts
 ## Build (Production)
 
 ```sh
-bun build src/index.ts --outdir=dist
+bun build index.ts --outfile=index.js
 ```
 
 ## 🤖 Features
