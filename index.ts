@@ -119,9 +119,9 @@ let dataContacts: Contact[] = [
   },
 ];
 
-function renderContacts() {
-  for (const contact of dataContacts) {
-    console.log(`
+function renderContacts(contacts: Contact[]) {
+  contacts.forEach((contact) => {
+    console.info(`
 Name: ${contact.fullName}
 Email: ${contact.email}
 Phone Number: ${contact.phoneNumber}
@@ -130,46 +130,119 @@ Birth Date: ${contact.birthDate}
 Notes: ${contact.notes}`);
 
     if (contact.address) {
-      console.log(`Address: ${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.postalCode}, ${contact.address.country}`);
+      console.info(
+        `Address: ${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.postalCode}, ${contact.address.country}`
+      );
     }
 
-    if (contact.labels && contact.labels?.length > 0) {
-      console.log(`Labels:`);
-      for (let labelIndex = 0; labelIndex < contact.labels.length; labelIndex++) {
-        const label = contact.labels[labelIndex];
-        console.log(`- ${label.name}`);
-      }
+    if (contact.labels && contact.labels.length > 0) {
+      console.info(`Labels:`);
+      contact.labels.forEach((label) => {
+        console.info(`- ${label.name} (${label.color})`);
+      });
     }
-  }
+  });
 }
 
-renderContacts();
+// QUIZ: Level 1 ✅
+function searchContactByName(contacts: Contact[]) {
+  const inputName = prompt("Enter Name:");
 
-// // QUIZ: Level 1
-// function searchContactByName(name: string) {
+  if (!inputName) {
+    console.info("Please enter name.");
+    return null;
+  }
 
-//   const inputName  = prompt ("Enter Fullname: ")
+  const lowerCasedInputName = inputName.toLowerCase();
 
-//   console.log(inputName);
+  const foundContacts = contacts.filter((contact) =>
+    contact.fullName.toLowerCase().includes(lowerCasedInputName)
+  );
 
-//   if name == inputName(
+  if (foundContacts.length <= 0) {
+    console.info("No contacts found.");
+    return null;
+  }
 
-//   )
+  renderContacts(foundContacts);
+}
 
-// }
-// searchContactByName();
+// QUIZ: Level 2 ✅
+function searchContactByKeyword(contacts: Contact[]) {
+  const inputKeyword = prompt("Enter Keyword:");
 
-// // QUIZ: Level 2
-// function searchContactByKeyword(keyword: string) {}
+  if (!inputKeyword) {
+    console.error("Please enter keyword.");
+    return null;
+  }
 
-// // QUIZ: Level 3
-// function deleteContactById(id: number) {}
+  const lowerCasedInputKeyword = inputKeyword.toLowerCase();
 
-// // QUIZ: Level 4
-// function addContact(contact: InputContact) {}
+  const foundContacts = contacts.filter(
+    (contact) =>
+      contact.fullName.toLowerCase().includes(lowerCasedInputKeyword) ||
+      contact.email.toLowerCase().includes(lowerCasedInputKeyword) ||
+      contact.phoneNumber.toLowerCase().includes(lowerCasedInputKeyword) ||
+      contact.notes?.toLowerCase().includes(lowerCasedInputKeyword) ||
+      contact.address?.street.toLowerCase().includes(lowerCasedInputKeyword) ||
+      contact.address?.city.toLowerCase().includes(lowerCasedInputKeyword) ||
+      contact.address?.state.toLowerCase().includes(lowerCasedInputKeyword) ||
+      contact.address?.country.toLowerCase().includes(lowerCasedInputKeyword)
+  );
 
-// // QUIZ: Level 5
-// function updateContact(contact: InputContact) {}
+  if (foundContacts.length <= 0) {
+    console.info("No contacts found.");
+    return null;
+  }
 
-// // QUIZ: Level 10
-// function calculateAverageAge() {}
+  renderContacts(foundContacts);
+}
+
+// QUIZ: Level 3 ✅
+function deleteContactById(contacts: Contact[]) {
+  const inputId = prompt("Enter contact ID to delete:");
+
+  if (!inputId) {
+    console.info("Please enter ID.");
+    return null;
+  }
+
+  const id = parseInt(inputId);
+
+  const updatedContacts = contacts.filter((contact) => contact.id !== id);
+
+  dataContacts = updatedContacts;
+
+  console.info(`Contact with ID '${id}' has been deleted.`);
+}
+
+// QUIZ: Level 4
+function addContact(contacts: Contact[]) {
+  const inputContact: InputContact = {
+    fullName: prompt("Enter Full Name:") || "",
+    email: prompt("Enter Email:") || "",
+    phoneNumber: prompt("Enter Phone Number:") || "",
+  };
+
+  const newContact: Contact = {
+    id: contacts[contacts.length - 1].id + 1,
+    ...inputContact,
+  };
+
+  dataContacts = [...dataContacts, newContact];
+
+  console.info("New contact has been added.");
+}
+
+// QUIZ: Level 5
+function updateContact(contacts: Contact[]) {}
+
+// QUIZ: Level 10
+function calculateAverageAge() {}
+
+// searchContactByName(dataContacts);
+// searchContactByKeyword(dataContacts);
+// deleteContactById(dataContacts);
+
+addContact(dataContacts);
+renderContacts(dataContacts);
