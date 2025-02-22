@@ -3,9 +3,9 @@ type Contact = {
   fullName: string;
   email: string;
   phoneNumber: string;
-  avatarUrl?: string;
-  url?: string;
-  birthDate?: Date;
+  avatarUrl?: string | null;
+  url?: string | null;
+  birthDate?: Date | null;
   notes?: string | null;
   address?: Address;
   labels?: Label[];
@@ -15,6 +15,7 @@ type InputContact = {
   fullName: string;
   email: string;
   phoneNumber: string;
+  address?: Address;
 };
 
 type Address = {
@@ -119,6 +120,15 @@ let dataContacts: Contact[] = [
   },
 ];
 
+// QUIZ: Level 7
+function displayBirthDate(birthDate?: Date | null) {
+  if (!birthDate) {
+    return "No birth date";
+  }
+  // TODO: Format the birth date to 00 Month 0000
+  return birthDate;
+}
+
 function renderContacts(contacts: Contact[]) {
   contacts.forEach((contact) => {
     console.info(`
@@ -126,7 +136,7 @@ Name: ${contact.fullName}
 Email: ${contact.email}
 Phone Number: ${contact.phoneNumber}
 Avatar: ${contact.avatarUrl}
-Birth Date: ${contact.birthDate}
+Birth Date: ${displayBirthDate(contact.birthDate)}
 Notes: ${contact.notes}`);
 
     if (contact.address) {
@@ -224,9 +234,27 @@ function addContact(contacts: Contact[]) {
     phoneNumber: prompt("Enter Phone Number:") || "",
   };
 
+  console.info("🏠 Address");
+
+  const inputAddress: Address = {
+    street: prompt("Enter Street:") || "",
+    city: prompt("Enter City:") || "",
+    state: prompt("Enter State:") || "",
+    postalCode: prompt("Enter Postal Code:") || "",
+    country: prompt("Enter Country:") || "",
+  };
+
+  // QUIZ: Level 5
+  // - Avatar URL
+  // - Birth Date
+
   const newContact: Contact = {
     id: contacts[contacts.length - 1].id + 1,
     ...inputContact,
+    address: inputAddress,
+    avatarUrl: null,
+    birthDate: null,
+    notes: "",
   };
 
   dataContacts = [...dataContacts, newContact];
@@ -234,11 +262,20 @@ function addContact(contacts: Contact[]) {
   console.info("New contact has been added.");
 }
 
-// QUIZ: Level 5
-function updateContact(contacts: Contact[]) {}
+// QUIZ: Level 6
+function updateContact(contacts: Contact[]) {
+  // use .map() to update the contact
+}
 
 // QUIZ: Level 10
-function calculateAverageAge() {}
+function calculateAverageAge(contacts: Contact[]) {
+  // use .reduce() to calculate the average age of all contacts
+}
+
+// QUIZ: Level 10
+function sortContactsByName(contacts: Contact[]) {
+  // use .sort() to sort contacts by name
+}
 
 // searchContactByName(dataContacts);
 // searchContactByKeyword(dataContacts);

@@ -1,6 +1,6 @@
 const names = ["Adi", "Budi", "Caca"];
 
-const modifiedNames = names.map((name) => {
+const updatedNames = names.map((name) => {
   if (name === "Budi") {
     return name.toUpperCase();
   } else {
@@ -8,4 +8,4 @@ const modifiedNames = names.map((name) => {
   }
 });
 
-console.log({ modifiedNames });
+console.log({ updatedNames });
