@@ -136,29 +136,54 @@ function displayBirthDate(birthDate?: Date | null) {
   return birthDate;
 }
 
+function renderContactObject(contact: Contact) {
+  console.info(`
+    ID: ${contact.id}
+    Name: ${contact.fullName}
+    Email: ${contact.email}
+    Phone Number: ${contact.phoneNumber}
+    Avatar: ${contact.avatarUrl}
+    Birth Date: ${displayBirthDate(contact.birthDate)}
+    Notes: ${contact.notes}`);
+
+  if (contact.address) {
+    console.info(
+      `Address: ${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.postalCode}, ${contact.address.country}`
+    );
+  }
+
+  if (contact.labels && contact.labels.length > 0) {
+    console.info(`Labels:`);
+    contact.labels.forEach((label) => {
+      console.info(`- ${label.name} (${label.color})`);
+    });
+  }
+}
+
 function renderContacts(contacts: Contact[]) {
   contacts.forEach((contact) => {
-    console.info(`
-Name: ${contact.fullName}
-Email: ${contact.email}
-Phone Number: ${contact.phoneNumber}
-Avatar: ${contact.avatarUrl}
-Birth Date: ${displayBirthDate(contact.birthDate)}
-Notes: ${contact.notes}`);
-
-    if (contact.address) {
-      console.info(
-        `Address: ${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.postalCode}, ${contact.address.country}`
-      );
-    }
-
-    if (contact.labels && contact.labels.length > 0) {
-      console.info(`Labels:`);
-      contact.labels.forEach((label) => {
-        console.info(`- ${label.name} (${label.color})`);
-      });
-    }
+    renderContactObject(contact);
   });
+}
+
+function renderContactById(contacts: Contact[]) {
+  const inputId = prompt("\nEnter contact ID to display:");
+
+  if (!inputId) {
+    console.info("Please enter ID");
+    return null;
+  }
+
+  const id = parseInt(inputId);
+
+  const foundContact = contacts.find((contact) => contact.id === id);
+
+  if (!foundContact) {
+    console.info("No contact found");
+    return null;
+  }
+
+  renderContactObject(foundContact);
 }
 
 // QUIZ: Level 1 ✅
@@ -281,21 +306,32 @@ function addContact(contacts: Contact[]) {
 
 // QUIZ: Level 6 ⌛️
 function updateContact(contacts: Contact[]) {
-  const inputId = prompt("Enter contact ID to edit:");
+  const inputId = prompt("\nEnter contact ID to edit:");
 
   if (!inputId) {
-    console.info("Please enter ID");
-
+    console.info("\nPlease enter ID");
     return null;
   }
 
   const id = parseInt(inputId);
 
+  const contact = contacts.find((contact) => contact.id === id);
+
+  console.info("\nEnter new detail, or leave it blank each to not modify\n");
   const inputContact: InputContact = {
-    fullName: prompt("Enter Full Name:") || "",
-    email: prompt("Enter Email:") || "",
-    phoneNumber: prompt("Enter Phone Number:") || "",
-    avatarLinkUrl: prompt("Enter your avatar link url:") || "",
+    fullName:
+      prompt(`Enter Full Name: (${contact?.fullName})`) ||
+      contact?.fullName ||
+      "",
+    email: prompt(`Enter Email: (${contact?.email})`) || contact?.email || "",
+    phoneNumber:
+      prompt(`Enter Phone Number: (${contact?.phoneNumber})`) ||
+      contact?.phoneNumber ||
+      "",
+    avatarLinkUrl:
+      prompt(`Enter your avatar link url: (${contact?.avatarUrl})`) ||
+      contact?.avatarUrl ||
+      "",
   };
 
   const updatedContacts = contacts.map((contact) => {
@@ -305,9 +341,9 @@ function updateContact(contacts: Contact[]) {
     return contact;
   });
 
-  console.info("Updated Contacts:", updatedContacts);
+  dataContacts = updatedContacts;
 
-  return updatedContacts;
+  console.info("Contact has been updated.");
 }
 
 // QUIZ: Level 10 ⌛️
@@ -328,5 +364,7 @@ function sortContactsByName(contacts: Contact[]) {
 // searchContactByKeyword(dataContacts);
 // deleteContactById(dataContacts);
 
-addContact(dataContacts);
 renderContacts(dataContacts);
+updateContact(dataContacts);
+renderContactById(dataContacts);
+// addContact(dataContacts);
