@@ -27,10 +27,10 @@ type Address = {
   country: string;
 };
 
-type birthDate = {
-  date: Date;
-  month: Date;
-  year: Date;
+type InputBirthDate = {
+  date: string;
+  month: string;
+  year: string;
 };
 
 type Label = {
@@ -147,7 +147,9 @@ Birth Date: ${displayBirthDate(contact.birthDate)}
 Notes: ${contact.notes}`);
 
     if (contact.address) {
-      console.info(`Address: ${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.postalCode}, ${contact.address.country}`);
+      console.info(
+        `Address: ${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.postalCode}, ${contact.address.country}`
+      );
     }
 
     if (contact.labels && contact.labels.length > 0) {
@@ -171,7 +173,9 @@ function searchContactByName(contacts: Contact[]) {
 
   const lowerCasedInputName = inputName.toLowerCase();
 
-  const foundContacts = contacts.filter((contact) => contact.fullName.toLowerCase().includes(lowerCasedInputName));
+  const foundContacts = contacts.filter((contact) =>
+    contact.fullName.toLowerCase().includes(lowerCasedInputName)
+  );
 
   if (foundContacts.length <= 0) {
     console.info("No contacts found");
@@ -250,26 +254,23 @@ function addContact(contacts: Contact[]) {
   };
 
   // QUIZ: Level 5
+  console.info("📅 Birthdate");
+  const inputBirthDate: InputBirthDate = {
+    date: prompt("Enter your birth date (DD):") || "",
+    month: prompt("Enter your birth month (MM):") || "",
+    year: prompt("Enter your birth year (YYYY):") || "",
+  };
 
-  // - Birth Date
+  const inputBirthDateString = `${inputBirthDate.year}-${inputBirthDate.month}-${inputBirthDate.date}`;
 
-  //   console.info("📅 Birthdate");
-
-  //   const inputBirthDate: birthDate = {
-  //     date: prompt("Enter your birth date (DD):") || "",
-  //     month: prompt("Enter your birth month (MM):") || "",
-  //     year: prompt("Enter your birth year (YYYY):") || "",
-  //   };
-
-  //   const birthDate = Date.parse(inputBirthDate);
-  // }
+  const birthDate = new Date(inputBirthDateString);
 
   const newContact: Contact = {
     id: contacts[contacts.length - 1].id + 1,
     ...inputContact,
     address: inputAddress,
     avatarUrl: null,
-    birthDate: null,
+    birthDate,
     notes: "",
   };
 
@@ -277,8 +278,6 @@ function addContact(contacts: Contact[]) {
 
   console.info("New contact has been added.");
 }
-
-//
 
 // QUIZ: Level 6 ⌛️
 function updateContact(contacts: Contact[]) {
@@ -315,7 +314,7 @@ function updateContact(contacts: Contact[]) {
 function calculateAverageAge(contacts: Contact[]) {
   const validContacts = contacts.filter((contact) => contact.birthDate);
 
-  const totalAge = validContacts.reduce((sum, contact) => {});
+  // const totalAge = validContacts.reduce((sum, contact) => {});
 
   console.log(calculateAverageAge(dataContacts));
 }
@@ -329,4 +328,5 @@ function sortContactsByName(contacts: Contact[]) {
 // searchContactByKeyword(dataContacts);
 // deleteContactById(dataContacts);
 
-// renderContacts(dataContacts);
+addContact(dataContacts);
+renderContacts(dataContacts);
