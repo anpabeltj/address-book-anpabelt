@@ -3,9 +3,9 @@ type Contact = {
   fullName: string;
   email: string;
   phoneNumber: string;
-  avatarUrl?: string;
-  url?: string;
-  birthDate?: Date;
+  avatarUrl?: string | null;
+  url?: string | null;
+  birthDate?: Date | null;
   notes?: string | null;
   address?: Address;
   labels?: Label[];
@@ -15,6 +15,8 @@ type InputContact = {
   fullName: string;
   email: string;
   phoneNumber: string;
+  address?: Address;
+  avatarLinkUrl: String;
 };
 
 type Address = {
@@ -23,6 +25,12 @@ type Address = {
   state: string;
   postalCode: string;
   country: string;
+};
+
+type birthDate = {
+  date: Date;
+  month: Date;
+  year: Date;
 };
 
 type Label = {
@@ -119,57 +127,206 @@ let dataContacts: Contact[] = [
   },
 ];
 
-function renderContacts() {
-  for (const contact of dataContacts) {
-    console.log(`
+// QUIZ: Level 7
+function displayBirthDate(birthDate?: Date | null) {
+  if (!birthDate) {
+    return "No birth date";
+  }
+  // TODO: Format the birth date to 00 Month 0000
+  return birthDate;
+}
+
+function renderContacts(contacts: Contact[]) {
+  contacts.forEach((contact) => {
+    console.info(`
 Name: ${contact.fullName}
 Email: ${contact.email}
 Phone Number: ${contact.phoneNumber}
 Avatar: ${contact.avatarUrl}
-Birth Date: ${contact.birthDate}
+Birth Date: ${displayBirthDate(contact.birthDate)}
 Notes: ${contact.notes}`);
 
     if (contact.address) {
-      console.log(`Address: ${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.postalCode}, ${contact.address.country}`);
+      console.info(`Address: ${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.postalCode}, ${contact.address.country}`);
     }
 
-    if (contact.labels && contact.labels?.length > 0) {
-      console.log(`Labels:`);
-      for (let labelIndex = 0; labelIndex < contact.labels.length; labelIndex++) {
-        const label = contact.labels[labelIndex];
-        console.log(`- ${label.name}`);
-      }
+    if (contact.labels && contact.labels.length > 0) {
+      console.info(`Labels:`);
+      contact.labels.forEach((label) => {
+        console.info(`- ${label.name} (${label.color})`);
+      });
     }
-  }
+  });
 }
 
-renderContacts();
+// QUIZ: Level 1 ✅
 
-// // QUIZ: Level 1
-// function searchContactByName(name: string) {
+function searchContactByName(contacts: Contact[]) {
+  const inputName = prompt("Enter Fullname: ");
 
-//   const inputName  = prompt ("Enter Fullname: ")
+  if (!inputName) {
+    console.info("Please enter name:");
+    return null;
+  }
 
-//   console.log(inputName);
+  const lowerCasedInputName = inputName.toLowerCase();
 
-//   if name == inputName(
+  const foundContacts = contacts.filter((contact) => contact.fullName.toLowerCase().includes(lowerCasedInputName));
 
-//   )
+  if (foundContacts.length <= 0) {
+    console.info("No contacts found");
+    return null;
+  }
 
-// }
-// searchContactByName();
+  renderContacts(foundContacts);
+}
 
-// // QUIZ: Level 2
-// function searchContactByKeyword(keyword: string) {}
+// QUIZ: Level 2 ✅
+function searchContactByKeyword(contacts: Contact[]) {
+  const inputKeyword = prompt("Enter Keyword: ");
 
-// // QUIZ: Level 3
-// function deleteContactById(id: number) {}
+  if (!inputKeyword) {
+    console.info("Please enter name:");
 
-// // QUIZ: Level 4
-// function addContact(contact: InputContact) {}
+    return null;
+  }
+  const lowerInputKeyword = inputKeyword.toLowerCase();
 
-// // QUIZ: Level 5
-// function updateContact(contact: InputContact) {}
+  const foundContacts = contacts.filter(
+    (contact) =>
+      contact.fullName.toLowerCase().includes(lowerInputKeyword) ||
+      contact.email.toLowerCase().includes(lowerInputKeyword) ||
+      contact.phoneNumber.toLowerCase().includes(lowerInputKeyword) ||
+      contact.notes?.toLowerCase().includes(lowerInputKeyword) ||
+      contact.address?.street.toLowerCase().includes(lowerInputKeyword) ||
+      contact.address?.city.toLowerCase().includes(lowerInputKeyword) ||
+      contact.address?.state.toLowerCase().includes(lowerInputKeyword) ||
+      contact.address?.country.toLowerCase().includes(lowerInputKeyword)
+  );
 
-// // QUIZ: Level 10
-// function calculateAverageAge() {}
+  if (foundContacts.length <= 0) {
+    console.info("No contacts found");
+    return null;
+  }
+  renderContacts(foundContacts);
+}
+
+// QUIZ: Level 3 ✅
+function deleteContactById(contacts: Contact[]) {
+  const inputId = prompt("Enter contact ID to delete:");
+
+  if (!inputId) {
+    console.info("Please enter ID");
+
+    return null;
+  }
+
+  const id = parseInt(inputId);
+
+  const updatedContacts = contacts.filter((contact) => contact.id !== id);
+
+  dataContacts = updatedContacts;
+
+  console.info(`Contact with ID '${id} has been deleted'`);
+}
+
+// QUIZ: Level 4 ⌛️
+function addContact(contacts: Contact[]) {
+  const inputContact: InputContact = {
+    fullName: prompt("Enter Full Name:") || "",
+    email: prompt("Enter Email:") || "",
+    phoneNumber: prompt("Enter Phone Number:") || "",
+    avatarLinkUrl: prompt("Enter your avatar link url:") || "",
+  };
+
+  console.info("🏠 Address");
+
+  const inputAddress: Address = {
+    street: prompt("Enter Street:") || "",
+    city: prompt("Enter City:") || "",
+    state: prompt("Enter State:") || "",
+    postalCode: prompt("Enter Postal Code:") || "",
+    country: prompt("Enter Country:") || "",
+  };
+
+  // QUIZ: Level 5
+
+  // - Birth Date
+
+  //   console.info("📅 Birthdate");
+
+  //   const inputBirthDate: birthDate = {
+  //     date: prompt("Enter your birth date (DD):") || "",
+  //     month: prompt("Enter your birth month (MM):") || "",
+  //     year: prompt("Enter your birth year (YYYY):") || "",
+  //   };
+
+  //   const birthDate = Date.parse(inputBirthDate);
+  // }
+
+  const newContact: Contact = {
+    id: contacts[contacts.length - 1].id + 1,
+    ...inputContact,
+    address: inputAddress,
+    avatarUrl: null,
+    birthDate: null,
+    notes: "",
+  };
+
+  dataContacts = [...dataContacts, newContact];
+
+  console.info("New contact has been added.");
+}
+
+//
+
+// QUIZ: Level 6 ⌛️
+function updateContact(contacts: Contact[]) {
+  const inputId = prompt("Enter contact ID to edit:");
+
+  if (!inputId) {
+    console.info("Please enter ID");
+
+    return null;
+  }
+
+  const id = parseInt(inputId);
+
+  const inputContact: InputContact = {
+    fullName: prompt("Enter Full Name:") || "",
+    email: prompt("Enter Email:") || "",
+    phoneNumber: prompt("Enter Phone Number:") || "",
+    avatarLinkUrl: prompt("Enter your avatar link url:") || "",
+  };
+
+  const updatedContacts = contacts.map((contact) => {
+    if (contact.id === id) {
+      return { ...contact, ...inputContact };
+    }
+    return contact;
+  });
+
+  console.info("Updated Contacts:", updatedContacts);
+
+  return updatedContacts;
+}
+
+// QUIZ: Level 10 ⌛️
+function calculateAverageAge(contacts: Contact[]) {
+  const validContacts = contacts.filter((contact) => contact.birthDate);
+
+  const totalAge = validContacts.reduce((sum, contact) => {});
+
+  console.log(calculateAverageAge(dataContacts));
+}
+
+// QUIZ: Level 10
+function sortContactsByName(contacts: Contact[]) {
+  // use .sort() to sort contacts by name
+}
+
+// searchContactByName(dataContacts);
+// searchContactByKeyword(dataContacts);
+// deleteContactById(dataContacts);
+
+// renderContacts(dataContacts);
