@@ -124,6 +124,7 @@ let dataContacts: Contact[] = [
     fullName: "Example Person",
     email: "example@example.com",
     phoneNumber: "+60123456789",
+    birthDate: new Date("2020-1-1"),
   },
 ];
 
@@ -259,7 +260,7 @@ function deleteContactById(contacts: Contact[]) {
   console.info(`Contact with ID '${id} has been deleted'`);
 }
 
-// QUIZ: Level 4 ⌛️
+// QUIZ: Level 4 ✅
 function addContact(contacts: Contact[]) {
   const inputContact: InputContact = {
     fullName: prompt("Enter Full Name:") || "",
@@ -304,7 +305,7 @@ function addContact(contacts: Contact[]) {
   console.info("New contact has been added.");
 }
 
-// QUIZ: Level 6 ⌛️
+// QUIZ: Level 6 ✅
 function updateContact(contacts: Contact[]) {
   const inputId = prompt("\nEnter contact ID to edit:");
 
@@ -346,25 +347,67 @@ function updateContact(contacts: Contact[]) {
   console.info("Contact has been updated.");
 }
 
-// QUIZ: Level 10 ⌛️
-function calculateAverageAge(contacts: Contact[]) {
-  const validContacts = contacts.filter((contact) => contact.birthDate);
+// QUIZ: Level 7 ✅
+function sortContactsByName(contacts: Contact[]) {
+  const sortedContacts = contacts.sort((previousContact, nextContact) => {
+    if (previousContact.fullName > nextContact.fullName) return 1;
+    if (previousContact.fullName < nextContact.fullName) return -1;
+    return 0;
+  });
 
-  // const totalAge = validContacts.reduce((sum, contact) => {});
-
-  console.log(calculateAverageAge(dataContacts));
+  renderContacts(sortedContacts);
 }
 
-// QUIZ: Level 10
-function sortContactsByName(contacts: Contact[]) {
-  // use .sort() to sort contacts by name
+// QUIZ: Level 8 ✅
+function calculateAge(birthDate?: Date | null) {
+  if (!birthDate) {
+    return undefined;
+  }
+
+  const today = new Date();
+  const todayYear = today.getFullYear();
+  const birthDateYear = birthDate.getFullYear(); // Notes: Very simple naive way to calculate age
+
+  const age = todayYear - birthDateYear;
+  return age;
+}
+
+// QUIZ: Level 9 ✅
+function calculateAverageAge(contacts: Contact[]): number {
+  const ages = contacts.map((contact) => calculateAge(contact.birthDate));
+
+  const totalAge =
+    ages.reduce((sum, age) => {
+      if (sum === undefined) return age;
+      if (age === undefined) return sum;
+      return sum + age;
+    }, 0) || 0;
+
+  const averageAge = totalAge / contacts.length;
+
+  return averageAge;
+}
+
+// Quiz: Level 12
+function showMainMenu() {
+  // TODO: Display the main menu
+  // 1. Display all contacts
+  // 2. Display contact by ID
+  // 3. Search contact by name
+  // 4. Add new contact
+  // 5. Update contact
+  // 6. Delete contact
+  // 7. Sort contacts by name
 }
 
 // searchContactByName(dataContacts);
 // searchContactByKeyword(dataContacts);
 // deleteContactById(dataContacts);
-
-renderContacts(dataContacts);
-updateContact(dataContacts);
-renderContactById(dataContacts);
+// renderContacts(dataContacts);
+// updateContact(dataContacts);
+// renderContactById(dataContacts);
 // addContact(dataContacts);
+// const resultAverageAge = calculateAverageAge(dataContacts);
+// sortContactsByName(dataContacts);
+
+// -------------------------------------------------
