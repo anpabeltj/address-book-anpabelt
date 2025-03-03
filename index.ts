@@ -27,10 +27,10 @@ type Address = {
   country: string;
 };
 
-type birthDate = {
-  date: Date;
-  month: Date;
-  year: Date;
+type InputBirthDate = {
+  date: string;
+  month: string;
+  year: string;
 };
 
 type Label = {
@@ -124,6 +124,7 @@ let dataContacts: Contact[] = [
     fullName: "Example Person",
     email: "example@example.com",
     phoneNumber: "+60123456789",
+    birthDate: new Date("2020-1-1"),
   },
 ];
 
@@ -136,27 +137,52 @@ function displayBirthDate(birthDate?: Date | null) {
   return birthDate;
 }
 
+function renderContactObject(contact: Contact) {
+  console.info(`
+    ID: ${contact.id}
+    Name: ${contact.fullName}
+    Email: ${contact.email}
+    Phone Number: ${contact.phoneNumber}
+    Avatar: ${contact.avatarUrl}
+    Birth Date: ${displayBirthDate(contact.birthDate)}
+    Notes: ${contact.notes}`);
+
+  if (contact.address) {
+    console.info(`Address: ${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.postalCode}, ${contact.address.country}`);
+  }
+
+  if (contact.labels && contact.labels.length > 0) {
+    console.info(`Labels:`);
+    contact.labels.forEach((label) => {
+      console.info(`- ${label.name} (${label.color})`);
+    });
+  }
+}
+
 function renderContacts(contacts: Contact[]) {
   contacts.forEach((contact) => {
-    console.info(`
-Name: ${contact.fullName}
-Email: ${contact.email}
-Phone Number: ${contact.phoneNumber}
-Avatar: ${contact.avatarUrl}
-Birth Date: ${displayBirthDate(contact.birthDate)}
-Notes: ${contact.notes}`);
-
-    if (contact.address) {
-      console.info(`Address: ${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.postalCode}, ${contact.address.country}`);
-    }
-
-    if (contact.labels && contact.labels.length > 0) {
-      console.info(`Labels:`);
-      contact.labels.forEach((label) => {
-        console.info(`- ${label.name} (${label.color})`);
-      });
-    }
+    renderContactObject(contact);
   });
+}
+
+function renderContactById(contacts: Contact[]) {
+  const inputId = prompt("\nEnter contact ID to display:");
+
+  if (!inputId) {
+    console.info("Please enter ID");
+    return null;
+  }
+
+  const id = parseInt(inputId);
+
+  const foundContact = contacts.find((contact) => contact.id === id);
+
+  if (!foundContact) {
+    console.info("No contact found");
+    return null;
+  }
+
+  renderContactObject(foundContact);
 }
 
 // QUIZ: Level 1 ✅
@@ -230,7 +256,7 @@ function deleteContactById(contacts: Contact[]) {
   console.info(`Contact with ID '${id} has been deleted'`);
 }
 
-// QUIZ: Level 4 ⌛️
+// QUIZ: Level 4 ✅
 function addContact(contacts: Contact[]) {
   const inputContact: InputContact = {
     fullName: prompt("Enter Full Name:") || "",
@@ -250,26 +276,23 @@ function addContact(contacts: Contact[]) {
   };
 
   // QUIZ: Level 5
+  console.info("📅 Birthdate");
+  const inputBirthDate: InputBirthDate = {
+    date: prompt("Enter your birth date (DD):") || "",
+    month: prompt("Enter your birth month (MM):") || "",
+    year: prompt("Enter your birth year (YYYY):") || "",
+  };
 
-  // - Birth Date
+  const inputBirthDateString = `${inputBirthDate.year}-${inputBirthDate.month}-${inputBirthDate.date}`;
 
-  //   console.info("📅 Birthdate");
-
-  //   const inputBirthDate: birthDate = {
-  //     date: prompt("Enter your birth date (DD):") || "",
-  //     month: prompt("Enter your birth month (MM):") || "",
-  //     year: prompt("Enter your birth year (YYYY):") || "",
-  //   };
-
-  //   const birthDate = Date.parse(inputBirthDate);
-  // }
+  const birthDate = new Date(inputBirthDateString);
 
   const newContact: Contact = {
     id: contacts[contacts.length - 1].id + 1,
     ...inputContact,
     address: inputAddress,
     avatarUrl: null,
-    birthDate: null,
+    birthDate,
     notes: "",
   };
 
@@ -278,25 +301,25 @@ function addContact(contacts: Contact[]) {
   console.info("New contact has been added.");
 }
 
-//
-
-// QUIZ: Level 6 ⌛️
+// QUIZ: Level 6 ✅
 function updateContact(contacts: Contact[]) {
-  const inputId = prompt("Enter contact ID to edit:");
+  const inputId = prompt("\nEnter contact ID to edit:");
 
   if (!inputId) {
-    console.info("Please enter ID");
-
+    console.info("\nPlease enter ID");
     return null;
   }
 
   const id = parseInt(inputId);
 
+  const contact = contacts.find((contact) => contact.id === id);
+
+  console.info("\nEnter new detail, or leave it blank each to not modify\n");
   const inputContact: InputContact = {
-    fullName: prompt("Enter Full Name:") || "",
-    email: prompt("Enter Email:") || "",
-    phoneNumber: prompt("Enter Phone Number:") || "",
-    avatarLinkUrl: prompt("Enter your avatar link url:") || "",
+    fullName: prompt(`Enter Full Name: (${contact?.fullName})`) || contact?.fullName || "",
+    email: prompt(`Enter Email: (${contact?.email})`) || contact?.email || "",
+    phoneNumber: prompt(`Enter Phone Number: (${contact?.phoneNumber})`) || contact?.phoneNumber || "",
+    avatarLinkUrl: prompt(`Enter your avatar link url: (${contact?.avatarUrl})`) || contact?.avatarUrl || "",
   };
 
   const updatedContacts = contacts.map((contact) => {
@@ -306,27 +329,128 @@ function updateContact(contacts: Contact[]) {
     return contact;
   });
 
-  console.info("Updated Contacts:", updatedContacts);
+  dataContacts = updatedContacts;
 
-  return updatedContacts;
+  console.info("Contact has been updated.");
 }
 
-// QUIZ: Level 10 ⌛️
-function calculateAverageAge(contacts: Contact[]) {
-  const validContacts = contacts.filter((contact) => contact.birthDate);
-
-  const totalAge = validContacts.reduce((sum, contact) => {});
-
-  console.log(calculateAverageAge(dataContacts));
-}
-
-// QUIZ: Level 10
+// QUIZ: Level 7 ✅
 function sortContactsByName(contacts: Contact[]) {
-  // use .sort() to sort contacts by name
+  const sortedContacts = contacts.sort((previousContact, nextContact) => {
+    if (previousContact.fullName > nextContact.fullName) return 1;
+    if (previousContact.fullName < nextContact.fullName) return -1;
+    return 0;
+  });
+
+  renderContacts(sortedContacts);
 }
+
+// QUIZ: Level 8 ✅
+function calculateAge(birthDate?: Date | null) {
+  if (!birthDate) {
+    return undefined;
+  }
+
+  const today = new Date();
+  const todayYear = today.getFullYear();
+  const birthDateYear = birthDate.getFullYear(); // Notes: Very simple naive way to calculate age
+
+  const age = todayYear - birthDateYear;
+  return age;
+}
+
+// QUIZ: Level 9 ✅
+function calculateAverageAge(contacts: Contact[]): number {
+  const ages = contacts.map((contact) => calculateAge(contact.birthDate));
+
+  const totalAge =
+    ages.reduce((sum, age) => {
+      if (sum === undefined) return age;
+      if (age === undefined) return sum;
+      return sum + age;
+    }, 0) || 0;
+
+  const averageAge = totalAge / contacts.length;
+
+  return averageAge;
+}
+
+// Quiz: Level 12
+function showMainMenu() {
+  // TODO: Display the main menu
+  // 1. Display all contacts
+  // 2. Display contact by ID
+  // 3. Search contact by name
+  // 4. Add new contact
+  // 5. Update contact
+  // 6. Delete contact
+  // 7. Sort contacts by name
+
+  while (true) {
+    const menu = `
+  === Main Menu ===
+  1. Display all contacts
+  2. Display contact by ID
+  3. Search contact by name
+  4. Add new contact
+  5. Update contact
+  6. Delete contact
+  7. Sort contacts by name
+  0. Exit
+  Please enter your choice: `;
+
+    const choice = prompt(menu);
+
+    if (choice === "0") {
+      console.info("Exiting application. Have a great day!");
+      break;
+    }
+
+    switch (choice) {
+      case "1":
+        console.info("You selected: Display all contacts.");
+        renderContacts(dataContacts);
+        break;
+      case "2":
+        console.info("You selected: Display contact by ID.");
+        renderContactById(dataContacts);
+        break;
+      case "3":
+        console.info("You selected: Search contact by name.");
+        searchContactByName(dataContacts);
+        break;
+      case "4":
+        console.info("You selected: Add new contact.");
+        addContact(dataContacts);
+        break;
+      case "5":
+        console.info("You selected: Update contact.");
+        updateContact(dataContacts);
+        break;
+      case "6":
+        console.info("You selected: Delete contact.");
+        deleteContactById(dataContacts);
+        break;
+      case "7":
+        console.info("You selected: Sort contacts by name.");
+        sortContactsByName(dataContacts);
+        break;
+      default:
+        console.info("Invalid option. Please try again.");
+        break;
+    }
+  }
+}
+showMainMenu();
 
 // searchContactByName(dataContacts);
 // searchContactByKeyword(dataContacts);
 // deleteContactById(dataContacts);
-
 // renderContacts(dataContacts);
+// updateContact(dataContacts);
+// renderContactById(dataContacts);
+// addContact(dataContacts);
+// const resultAverageAge = calculateAverageAge(dataContacts);
+// sortContactsByName(dataContacts);
+
+// -------------------------------------------------
