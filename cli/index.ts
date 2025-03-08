@@ -129,21 +129,7 @@
     },
   ];
 
-  function save(contacts: Contact[]) {
-    localStorage.setItem("contacts", JSON.stringify(contacts));
-  }
-
-  function load() {
-    const contacts = localStorage.getItem("contacts");
-
-    if (!contacts) {
-      save(dataContacts);
-      return dataContacts;
-    }
-
-    return JSON.parse(contacts) as Contact[];
-  }
-
+  // QUIZ: Level 7
   function displayBirthDate(birthDate?: Date | null) {
     if (!birthDate) {
       return "No birth date";
@@ -202,6 +188,8 @@
     renderContactObject(foundContact);
   }
 
+  // QUIZ: Level 1 ✅
+
   function searchContactByName(contacts: Contact[]) {
     const inputName = prompt("Enter Fullname: ");
 
@@ -224,6 +212,7 @@
     renderContacts(foundContacts);
   }
 
+  // QUIZ: Level 2 ✅
   function searchContactByKeyword(contacts: Contact[]) {
     const inputKeyword = prompt("Enter Keyword: ");
 
@@ -253,6 +242,7 @@
     renderContacts(foundContacts);
   }
 
+  // QUIZ: Level 3 ✅
   function deleteContactById(contacts: Contact[]) {
     const inputId = prompt("Enter contact ID to delete:");
 
@@ -271,6 +261,7 @@
     console.info(`Contact with ID '${id} has been deleted'`);
   }
 
+  // QUIZ: Level 4 ✅
   function addContact(contacts: Contact[]) {
     const inputContact: InputContact = {
       fullName: prompt("Enter Full Name:") || "",
@@ -289,6 +280,7 @@
       country: prompt("Enter Country:") || "",
     };
 
+    // QUIZ: Level 5
     console.info("📅 Birthdate");
     const inputBirthDate: InputBirthDate = {
       date: prompt("Enter your birth date (DD):") || "",
@@ -309,11 +301,12 @@
       notes: "",
     };
 
-    save([...dataContacts, newContact]);
+    dataContacts = [...dataContacts, newContact];
 
     console.info("New contact has been added.");
   }
 
+  // QUIZ: Level 6 ✅
   function updateContact(contacts: Contact[]) {
     const inputId = prompt("\nEnter contact ID to edit:");
 
@@ -350,11 +343,12 @@
       return contact;
     });
 
-    save(updatedContacts);
+    dataContacts = updatedContacts;
 
     console.info("Contact has been updated.");
   }
 
+  // QUIZ: Level 7 ✅
   function sortContactsByName(contacts: Contact[]) {
     const sortedContacts = contacts.sort((previousContact, nextContact) => {
       if (previousContact.fullName > nextContact.fullName) return 1;
@@ -365,6 +359,7 @@
     renderContacts(sortedContacts);
   }
 
+  // QUIZ: Level 8 ✅
   function calculateAge(birthDate?: Date | null) {
     if (!birthDate) {
       return undefined;
@@ -378,6 +373,7 @@
     return age;
   }
 
+  // QUIZ: Level 9 ✅
   function calculateAverageAge(contacts: Contact[]): number {
     const ages = contacts.map((contact) => calculateAge(contact.birthDate));
 
@@ -393,6 +389,64 @@
     return averageAge;
   }
 
-  renderContacts(load());
-  // addContact(load());
+  // Quiz: Level 12
+  function showMainMenu() {
+    let running = true;
+
+    while (running) {
+      const menuText = `
+=== Main Menu ===
+1. Display all contacts
+2. Display contact by ID
+3. Search contact by name
+4. Add new contact
+5. Update contact
+6. Delete contact
+7. Sort contacts by name
+0. Exit
+Please enter your choice:`;
+
+      const choice = Number(prompt(menuText));
+
+      switch (choice) {
+        case 0:
+          console.info("Exiting application. Have a great day!");
+          running = false;
+          break;
+        case 1:
+          console.info("You selected: Display all contacts.");
+          renderContacts(dataContacts);
+          break;
+        case 2:
+          console.info("You selected: Display contact by ID.");
+          renderContactById(dataContacts);
+          break;
+        case 3:
+          console.info("You selected: Search contact by name.");
+          searchContactByName(dataContacts);
+          break;
+        case 4:
+          console.info("You selected: Add new contact.");
+          addContact(dataContacts);
+          break;
+        case 5:
+          console.info("You selected: Update contact.");
+          updateContact(dataContacts);
+          break;
+        case 6:
+          console.info("You selected: Delete contact.");
+          deleteContactById(dataContacts);
+          break;
+        case 7:
+          console.info("You selected: Sort contacts by name.");
+          sortContactsByName(dataContacts);
+          break;
+        default:
+          console.info("Invalid option. Please try again.");
+          break;
+      }
+    }
+  }
+
+  showMainMenu();
 })();
