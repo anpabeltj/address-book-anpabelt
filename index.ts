@@ -148,7 +148,9 @@ function renderContactObject(contact: Contact) {
     Notes: ${contact.notes}`);
 
   if (contact.address) {
-    console.info(`Address: ${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.postalCode}, ${contact.address.country}`);
+    console.info(
+      `Address: ${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.postalCode}, ${contact.address.country}`
+    );
   }
 
   if (contact.labels && contact.labels.length > 0) {
@@ -197,7 +199,9 @@ function searchContactByName(contacts: Contact[]) {
 
   const lowerCasedInputName = inputName.toLowerCase();
 
-  const foundContacts = contacts.filter((contact) => contact.fullName.toLowerCase().includes(lowerCasedInputName));
+  const foundContacts = contacts.filter((contact) =>
+    contact.fullName.toLowerCase().includes(lowerCasedInputName)
+  );
 
   if (foundContacts.length <= 0) {
     console.info("No contacts found");
@@ -316,10 +320,19 @@ function updateContact(contacts: Contact[]) {
 
   console.info("\nEnter new detail, or leave it blank each to not modify\n");
   const inputContact: InputContact = {
-    fullName: prompt(`Enter Full Name: (${contact?.fullName})`) || contact?.fullName || "",
+    fullName:
+      prompt(`Enter Full Name: (${contact?.fullName})`) ||
+      contact?.fullName ||
+      "",
     email: prompt(`Enter Email: (${contact?.email})`) || contact?.email || "",
-    phoneNumber: prompt(`Enter Phone Number: (${contact?.phoneNumber})`) || contact?.phoneNumber || "",
-    avatarLinkUrl: prompt(`Enter your avatar link url: (${contact?.avatarUrl})`) || contact?.avatarUrl || "",
+    phoneNumber:
+      prompt(`Enter Phone Number: (${contact?.phoneNumber})`) ||
+      contact?.phoneNumber ||
+      "",
+    avatarLinkUrl:
+      prompt(`Enter your avatar link url: (${contact?.avatarUrl})`) ||
+      contact?.avatarUrl ||
+      "",
   };
 
   const updatedContacts = contacts.map((contact) => {
@@ -377,61 +390,53 @@ function calculateAverageAge(contacts: Contact[]): number {
 
 // Quiz: Level 12
 function showMainMenu() {
-  // TODO: Display the main menu
-  // 1. Display all contacts
-  // 2. Display contact by ID
-  // 3. Search contact by name
-  // 4. Add new contact
-  // 5. Update contact
-  // 6. Delete contact
-  // 7. Sort contacts by name
+  let running = true;
 
-  while (true) {
-    const menu = `
-  === Main Menu ===
-  1. Display all contacts
-  2. Display contact by ID
-  3. Search contact by name
-  4. Add new contact
-  5. Update contact
-  6. Delete contact
-  7. Sort contacts by name
-  0. Exit
-  Please enter your choice: `;
+  while (running) {
+    const menuText = `
+=== Main Menu ===
+1. Display all contacts
+2. Display contact by ID
+3. Search contact by name
+4. Add new contact
+5. Update contact
+6. Delete contact
+7. Sort contacts by name
+0. Exit
+Please enter your choice:`;
 
-    const choice = prompt(menu);
-
-    if (choice === "0") {
-      console.info("Exiting application. Have a great day!");
-      break;
-    }
+    const choice = Number(prompt(menuText));
 
     switch (choice) {
-      case "1":
+      case 0:
+        console.info("Exiting application. Have a great day!");
+        running = false;
+        break;
+      case 1:
         console.info("You selected: Display all contacts.");
         renderContacts(dataContacts);
         break;
-      case "2":
+      case 2:
         console.info("You selected: Display contact by ID.");
         renderContactById(dataContacts);
         break;
-      case "3":
+      case 3:
         console.info("You selected: Search contact by name.");
         searchContactByName(dataContacts);
         break;
-      case "4":
+      case 4:
         console.info("You selected: Add new contact.");
         addContact(dataContacts);
         break;
-      case "5":
+      case 5:
         console.info("You selected: Update contact.");
         updateContact(dataContacts);
         break;
-      case "6":
+      case 6:
         console.info("You selected: Delete contact.");
         deleteContactById(dataContacts);
         break;
-      case "7":
+      case 7:
         console.info("You selected: Sort contacts by name.");
         sortContactsByName(dataContacts);
         break;
@@ -441,16 +446,5 @@ function showMainMenu() {
     }
   }
 }
+
 showMainMenu();
-
-// searchContactByName(dataContacts);
-// searchContactByKeyword(dataContacts);
-// deleteContactById(dataContacts);
-// renderContacts(dataContacts);
-// updateContact(dataContacts);
-// renderContactById(dataContacts);
-// addContact(dataContacts);
-// const resultAverageAge = calculateAverageAge(dataContacts);
-// sortContactsByName(dataContacts);
-
-// -------------------------------------------------
