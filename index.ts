@@ -463,6 +463,11 @@ Please enter your choice:`;
     }
   }
 
-  renderContacts(load());
+  // renderContacts(load());
   // addContact(load());
+
+  const userFullNameElement = document.getElementById("user-fullname");
+  if (!userFullNameElement) return;
+
+  userFullNameElement.innerHTML = "Example User";
 })();

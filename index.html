@@ -6,33 +6,45 @@
     <title>Adress Book</title>
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
   </head>
-  <body>
+  <body class="flex min-h-screen flex-col">
     <header class="p-8 bg-gray-100">
-      <h1>Welcome, Anpabelt</h1>
+      <h1>
+        <span>Welcome, </span>
+        <span id="user-fullname">Anpabelt Trah Javala</span>
+      </h1>
     </header>
 
     <!-- Aside -->
 
     <!-- Main -->
+    <main id="site-content" class="flex-[1] m-8 max-w-8xl py-4 px-16 space-y-8">
+      <section class="flex justify-between items-center">
+        <h2>Contacts</h2>
 
-    <main id="site-content" class="m-8 max-w-8xl">
-      <div class="p-16">
-        <div class="flex justify-between items-center p-16">
-          <h2>Contacts</h2>
+        <form id="search-contact" method="get">
+          <div class="w-10 w-full flex border-gray-400">
+            <input
+              id="search-input"
+              placeholder="Search here"
+              class="border-2 border-black-400 rounded-md pl-2"
+              type="text"
+            />
+          </div>
+        </form>
+      </section>
 
-          <form id="search-contact" method="get" class="p-16">
-            <div class="w-10 flex border-gray-400">
-              <input
-                id="search-input"
-                placeholder="Search here"
-                class="border-2 border-black-400 rounded-md pl-2"
-                type="text"
-              />
+      <section>
+        <ul>
+          <li>
+            <div>
+              <h3>John Doe</h3>
+              <p>john@example.com</p>
             </div>
-          </form>
-        </div>
+          </li>
+        </ul>
+      </section>
 
-        <table class="w-full items-center">
+      <!-- <table class="w-full items-center">
           <thead>
             <tr>
               <th>Name</th>
@@ -43,22 +55,19 @@
               <th>Notes</th>
             </tr>
           </thead>
-        </table>
-        <hr class="my-1 mx-2" />
-      </div>
+        </table> -->
     </main>
 
     <!-- Footer -->
     <footer
       id="footer"
-      class="bg-gray-600 bg-gradient-to-t from-retro-950 to-retro-550 flex flex-col relative justify-center text-center items-center mt-20 p-4"
+      class="bg-gray-600 text-gray-100 bg-gradient-to-t from-retro-950 to-retro-550 flex flex-col relative justify-center text-center items-center mt-20 p-4"
     >
       <p class="pt-4 text-center">
         Copyright © 2025 Anpabelt. All rights reserved.
       </p>
     </footer>
 
-    <script src="/storage.js"></script>
     <script src="/index.js"></script>
   </body>
 </html>
