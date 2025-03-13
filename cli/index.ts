@@ -129,21 +129,6 @@
     },
   ];
 
-  function save(contacts: Contact[]) {
-    localStorage.setItem("contacts", JSON.stringify(contacts));
-  }
-
-  function load() {
-    const contacts = localStorage.getItem("contacts");
-
-    if (!contacts) {
-      save(dataContacts);
-      return dataContacts;
-    }
-
-    return JSON.parse(contacts) as Contact[];
-  }
-
   // QUIZ: Level 7
   function displayBirthDate(birthDate?: Date | null) {
     if (!birthDate) {
@@ -312,7 +297,7 @@
       notes: "",
     };
 
-    save([...dataContacts, newContact]);
+    dataContacts = [...dataContacts, newContact];
 
     console.info("New contact has been added.");
   }
@@ -390,67 +375,65 @@
 
     return averageAge;
   }
-  renderContacts(load());
-  addContact(load());
+
+  // Quiz: Level 12
+  function showMainMenu() {
+    let running = true;
+
+    while (running) {
+      const menuText = `
+=== Main Menu ===
+1. Display all contacts
+2. Display contact by ID
+3. Search contact by name
+4. Add new contact
+5. Update contact
+6. Delete contact
+7. Sort contacts by name
+0. Exit
+Please enter your choice:`;
+
+      const choice = Number(prompt(menuText));
+
+      switch (choice) {
+        case 0:
+          console.info("Exiting application. Have a great day!");
+          running = false;
+          break;
+        case 1:
+          console.info("You selected: Display all contacts.");
+          renderContacts(dataContacts);
+          break;
+        case 2:
+          console.info("You selected: Display contact by ID.");
+          renderContactById(dataContacts);
+          break;
+        case 3:
+          console.info("You selected: Search contact by name.");
+          searchContactByName(dataContacts);
+          break;
+        case 4:
+          console.info("You selected: Add new contact.");
+          addContact(dataContacts);
+          break;
+        case 5:
+          console.info("You selected: Update contact.");
+          updateContact(dataContacts);
+          break;
+        case 6:
+          console.info("You selected: Delete contact.");
+          deleteContactById(dataContacts);
+          break;
+        case 7:
+          console.info("You selected: Sort contacts by name.");
+          sortContactsByName(dataContacts);
+          break;
+        default:
+          console.info("Invalid option. Please try again.");
+          break;
+      }
+    }
+  }
+
+  showMainMenu();
 })();
-
-//   // Quiz: Level 12
-//   function showMainMenu() {
-//     let running = true;
-
-//     while (running) {
-//       const menuText = `
-// === Main Menu ===
-// 1. Display all contacts
-// 2. Display contact by ID
-// 3. Search contact by name
-// 4. Add new contact
-// 5. Update contact
-// 6. Delete contact
-// 7. Sort contacts by name
-// 0. Exit
-// Please enter your choice:`;
-
-//       const choice = Number(prompt(menuText));
-
-//       switch (choice) {
-//         case 0:
-//           console.info("Exiting application. Have a great day!");
-//           running = false;
-//           break;
-//         case 1:
-//           console.info("You selected: Display all contacts.");
-//           renderContacts(dataContacts);
-//           break;
-//         case 2:
-//           console.info("You selected: Display contact by ID.");
-//           renderContactById(dataContacts);
-//           break;
-//         case 3:
-//           console.info("You selected: Search contact by name.");
-//           searchContactByName(dataContacts);
-//           break;
-//         case 4:
-//           console.info("You selected: Add new contact.");
-//           addContact(dataContacts);
-//           break;
-//         case 5:
-//           console.info("You selected: Update contact.");
-//           updateContact(dataContacts);
-//           break;
-//         case 6:
-//           console.info("You selected: Delete contact.");
-//           deleteContactById(dataContacts);
-//           break;
-//         case 7:
-//           console.info("You selected: Sort contacts by name.");
-//           sortContactsByName(dataContacts);
-//           break;
-//         default:
-//           console.info("Invalid option. Please try again.");
-//           break;
-//       }
-//     }
-//   }
-
-//   showMainMenu();
