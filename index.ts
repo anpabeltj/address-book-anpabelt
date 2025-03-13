@@ -144,7 +144,6 @@
     return JSON.parse(contacts) as Contact[];
   }
 
-  // QUIZ: Level 7
   function displayBirthDate(birthDate?: Date | null) {
     if (!birthDate) {
       return "No birth date";
@@ -153,34 +152,50 @@
     return birthDate;
   }
 
-  function renderContactObject(contact: Contact) {
-    console.info(`
-      ID: ${contact.id}
-      Name: ${contact.fullName}
-      Email: ${contact.email}
-      Phone Number: ${contact.phoneNumber}
-      Avatar: ${contact.avatarUrl}
-      Birth Date: ${displayBirthDate(contact.birthDate)}
-      Notes: ${contact.notes}`);
-
-    if (contact.address) {
-      console.info(
-        `Address: ${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.postalCode}, ${contact.address.country}`
-      );
-    }
-
-    if (contact.labels && contact.labels.length > 0) {
-      console.info(`Labels:`);
-      contact.labels.forEach((label) => {
-        console.info(`- ${label.name} (${label.color})`);
-      });
-    }
-  }
-
   function renderContacts(contacts: Contact[]) {
-    contacts.forEach((contact) => {
-      renderContactObject(contact);
-    });
+    const contactsListContainerElement =
+      document.getElementById("contacts-list");
+
+    if (!contactsListContainerElement) return;
+
+    contactsListContainerElement.innerHTML = contacts
+      .map((contact) => {
+        return `<li>
+        <div>
+          <h2>${contact.fullName}</h2>
+          <p>${contact.email}</p>
+          <p>${contact.phoneNumber}</p>
+          <p>${displayBirthDate(contact.birthDate)}</p>
+          ${contact.notes ? `<p>Notes: ${contact.notes}</p>` : ""}   
+          ${contact.address ? `<p>${contact.address.street}</p>` : ""}
+        </div>
+      </li>`;
+      })
+      .join("");
+
+    // TODO: Continue to render the rest of the contact details
+
+    // TODO: Transform ul-li into table
+
+    //   console.info(`
+    //     ID: ${contact.id}
+    //     Name: ${contact.fullName}
+    //     Email: ${contact.email}
+    //     Phone Number: ${contact.phoneNumber}
+    //     Avatar: ${contact.avatarUrl}
+    //     Birth Date: ${displayBirthDate(contact.birthDate)}
+    //     Notes: ${contact.notes}`);
+    // if (contact.address) {
+    //   console.info(
+    //     `Address: ${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.postalCode}, ${contact.address.country}`
+    //   );
+    // }
+    // if (contact.labels && contact.labels.length > 0) {
+    //   console.info(`Labels:`);
+    //   contact.labels.forEach((label) => {
+    //     console.info(`- ${label.name} (${label.color})`);
+    //   });
+    // }
   }
 
   function renderContactById(contacts: Contact[]) {
@@ -199,11 +214,7 @@
       console.info("No contact found");
       return null;
     }
-
-    renderContactObject(foundContact);
   }
-
-  // QUIZ: Level 1 ✅
 
   function searchContactByName(contacts: Contact[]) {
     const inputName = prompt("Enter Fullname: ");
@@ -227,7 +238,6 @@
     renderContacts(foundContacts);
   }
 
-  // QUIZ: Level 2 ✅
   function searchContactByKeyword(contacts: Contact[]) {
     const inputKeyword = prompt("Enter Keyword: ");
 
@@ -257,7 +267,6 @@
     renderContacts(foundContacts);
   }
 
-  // QUIZ: Level 3 ✅
   function deleteContactById(contacts: Contact[]) {
     const inputId = prompt("Enter contact ID to delete:");
 
@@ -276,7 +285,6 @@
     console.info(`Contact with ID '${id} has been deleted'`);
   }
 
-  // QUIZ: Level 4 ✅
   function addContact(contacts: Contact[]) {
     const inputContact: InputContact = {
       fullName: prompt("Enter Full Name:") || "",
@@ -295,7 +303,6 @@
       country: prompt("Enter Country:") || "",
     };
 
-    // QUIZ: Level 5
     console.info("📅 Birthdate");
     const inputBirthDate: InputBirthDate = {
       date: prompt("Enter your birth date (DD):") || "",
@@ -321,7 +328,6 @@
     console.info("New contact has been added.");
   }
 
-  // QUIZ: Level 6 ✅
   function updateContact(contacts: Contact[]) {
     const inputId = prompt("\nEnter contact ID to edit:");
 
@@ -363,7 +369,6 @@
     console.info("Contact has been updated.");
   }
 
-  // QUIZ: Level 7 ✅
   function sortContactsByName(contacts: Contact[]) {
     const sortedContacts = contacts.sort((previousContact, nextContact) => {
       if (previousContact.fullName > nextContact.fullName) return 1;
@@ -374,7 +379,6 @@
     renderContacts(sortedContacts);
   }
 
-  // QUIZ: Level 8 ✅
   function calculateAge(birthDate?: Date | null) {
     if (!birthDate) {
       return undefined;
@@ -388,7 +392,6 @@
     return age;
   }
 
-  // QUIZ: Level 9 ✅
   function calculateAverageAge(contacts: Contact[]): number {
     const ages = contacts.map((contact) => calculateAge(contact.birthDate));
 
@@ -410,16 +413,16 @@
 
     while (running) {
       const menuText = `
-=== Main Menu ===
-1. Display all contacts
-2. Display contact by ID
-3. Search contact by name
-4. Add new contact
-5. Update contact
-6. Delete contact
-7. Sort contacts by name
-0. Exit
-Please enter your choice:`;
+  === Main Menu ===
+  1. Display all contacts
+  2. Display contact by ID
+  3. Search contact by name
+  4. Add new contact
+  5. Update contact
+  6. Delete contact
+  7. Sort contacts by name
+  0. Exit
+  Please enter your choice:`;
 
       const choice = Number(prompt(menuText));
 
@@ -463,11 +466,6 @@ Please enter your choice:`;
     }
   }
 
-  // renderContacts(load());
+  renderContacts(load());
   // addContact(load());
-
-  const userFullNameElement = document.getElementById("user-fullname");
-  if (!userFullNameElement) return;
-
-  userFullNameElement.innerHTML = "Example User";
 })();
