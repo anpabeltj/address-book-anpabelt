@@ -23,25 +23,26 @@
 
         <form id="search-contact" method="get">
           <div class="w-10 w-full flex border-gray-400">
-            <input
-              id="search-input"
-              placeholder="Search here"
-              class="border-2 border-black-400 rounded-md pl-2"
-              type="text"
-            />
+            <input id="search-input" placeholder="Search here" class="border-2 border-black-400 rounded-md pl-2" type="text" />
           </div>
         </form>
       </section>
 
       <section>
-        <ul>
-          <li>
-            <div>
-              <h3>John Doe</h3>
-              <p>john@example.com</p>
-            </div>
-          </li>
-        </ul>
+        <table id="contacts-list" class="min-w-full text-center table-auto border-collapse border border-gray-300 divide-y divide-gray-300 divide-x rounded-md">
+          <thead>
+            <th class="bg-gray-600">Full Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Birth Date</th>
+            <th>Notes</th>
+            <th>Address</th>
+            <th>Labels</th>
+          </thead>
+          <tbody>
+            <!-- Rows go here -->
+          </tbody>
+        </table>
       </section>
 
       <!-- <table class="w-full items-center">
@@ -59,13 +60,8 @@
     </main>
 
     <!-- Footer -->
-    <footer
-      id="footer"
-      class="bg-gray-600 text-gray-100 bg-gradient-to-t from-retro-950 to-retro-550 flex flex-col relative justify-center text-center items-center mt-20 p-4"
-    >
-      <p class="pt-4 text-center">
-        Copyright © 2025 Anpabelt. All rights reserved.
-      </p>
+    <footer id="footer" class="bg-gray-600 text-gray-100 bg-gradient-to-t from-retro-950 to-retro-550 flex flex-col relative justify-center text-center items-center mt-20 p-4">
+      <p class="pt-4 text-center">Copyright © 2025 Anpabelt. All rights reserved.</p>
     </footer>
 
     <script src="/index.js"></script>
