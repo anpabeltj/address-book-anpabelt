@@ -172,6 +172,13 @@
   }
 
   function renderContacts(contacts: Contact[]) {
+    const urlParamsString = new URLSearchParams(window.location.search);
+    const query = urlParamsString.get("q");
+
+    const contactsToRender = query
+      ? searchContactByKeyword(contacts, query)
+      : contacts;
+
     const contactsListContainerElement =
       document.getElementById("contacts-list");
 
@@ -191,7 +198,7 @@
       </tr>
     </thead>
     <tbody>
-      ${contacts
+      ${contactsToRender
         .map(
           (contact) => `
           <tr class="border-b border-gray-200 odd:bg-white even:bg-slate-100 ">
@@ -200,7 +207,13 @@
             <td>${contact.phoneNumber}</td>
             <td>${displayBirthDate(contact.birthDate)}</td>
             <td>${contact.notes ? contact.notes : ""}</td>
-            <td>${contact.address ? contact.address.street : ""}</td>
+
+            <td>${
+              contact.address
+                ? `${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.country}`
+                : ""
+            }</td>
+
             <td>${
               contact.labels
                 ? contact.labels
@@ -259,15 +272,8 @@
     renderContacts(foundContacts);
   }
 
-  function searchContactByKeyword(contacts: Contact[]) {
-    const inputKeyword = prompt("Enter Keyword: ");
-
-    if (!inputKeyword) {
-      console.info("Please enter name:");
-
-      return null;
-    }
-    const lowerInputKeyword = inputKeyword.toLowerCase();
+  function searchContactByKeyword(contacts: Contact[], keyword: string) {
+    const lowerInputKeyword = keyword.toLowerCase();
 
     const foundContacts = contacts.filter(
       (contact) =>
@@ -282,10 +288,10 @@
     );
 
     if (foundContacts.length <= 0) {
-      console.info("No contacts found");
-      return null;
+      return [];
     }
-    renderContacts(foundContacts);
+
+    return foundContacts;
   }
 
   function deleteContactById(contacts: Contact[]) {
