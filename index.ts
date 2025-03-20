@@ -164,13 +164,6 @@
     });
   }
 
-  function renderContactsCount(contacts: Contact[]) {
-    const contactsCountElement = document.getElementById("contacts-count");
-    if (!contactsCountElement) return;
-
-    contactsCountElement.innerHTML = String(contacts.length);
-  }
-
   function renderContacts(contacts: Contact[]) {
     const urlParamsString = new URLSearchParams(window.location.search);
     const query = urlParamsString.get("q");
@@ -179,9 +172,15 @@
       ? searchContactByKeyword(contacts, query)
       : contacts;
 
+    const contactsCountElement = document.getElementById("contacts-count");
+    if (!contactsCountElement) return;
+
+    contactsCountElement.innerHTML = `${contactsToRender.length} ${
+      contactsToRender.length > 1 ? "contacts" : "contact"
+    }`;
+
     const contactsListContainerElement =
       document.getElementById("contacts-list");
-
     if (!contactsListContainerElement) return;
 
     // text-blue-700 text-green-700 text-red-700 text-orange-700
@@ -497,7 +496,6 @@
   function main() {
     const contacts = load();
 
-    renderContactsCount(contacts);
     renderContacts(contacts);
   }
 
