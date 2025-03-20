@@ -141,22 +141,36 @@
       return dataContacts;
     }
 
-    return JSON.parse(contacts) as Contact[];
+    const arrayContacts = JSON.parse(contacts) as Contact[];
+
+    const sanitizedContacts = arrayContacts.map((contact) => {
+      if (contact.birthDate) {
+        contact.birthDate = new Date(contact.birthDate);
+      }
+      return contact;
+    });
+
+    return sanitizedContacts;
   }
 
   function displayBirthDate(birthDate?: Date | null) {
     if (!birthDate) {
       return "No birth date";
     }
-    // TODO: Format the birth date to 00 Month 0000
-    return birthDate;
+    return birthDate.toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
   }
 
   function renderContacts(contacts: Contact[]) {
-    const contactsListContainerElement = document.getElementById("contacts-list");
+    const contactsListContainerElement =
+      document.getElementById("contacts-list");
 
     if (!contactsListContainerElement) return;
 
+    // text-blue-700 text-green-700 text-red-700 text-orange-700
     contactsListContainerElement.innerHTML = `
     <thead>
       <tr>
@@ -173,44 +187,29 @@
       ${contacts
         .map(
           (contact) => `
-          <tr>
+          <tr class="border-b border-gray-200 odd:bg-white even:bg-slate-100 ">
             <td>${contact.fullName}</td>
             <td>${contact.email}</td>
             <td>${contact.phoneNumber}</td>
             <td>${displayBirthDate(contact.birthDate)}</td>
             <td>${contact.notes ? contact.notes : ""}</td>
             <td>${contact.address ? contact.address.street : ""}</td>
-            <td>${contact.labels ? contact.labels.map((label) => `${label.name} (${label.color})`).join(", ") : ""}</td>
+            <td>${
+              contact.labels
+                ? contact.labels
+                    .map(
+                      (label) =>
+                        `<span class="text-${label.color}-700">${label.name}</span>`
+                    )
+                    .join(", ")
+                : ""
+            }</td>
           </tr>
         `
         )
         .join("")}
     </tbody>
   `;
-
-    // TODO: Continue to render the rest of the contact details
-
-    // TODO: Transform ul-li into table
-
-    //   console.info(`
-    //     ID: ${contact.id}
-    //     Name: ${contact.fullName}
-    //     Email: ${contact.email}
-    //     Phone Number: ${contact.phoneNumber}
-    //     Avatar: ${contact.avatarUrl}
-    //     Birth Date: ${displayBirthDate(contact.birthDate)}
-    //     Notes: ${contact.notes}`);
-    // if (contact.address) {
-    //   console.info(
-    //     `Address: ${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.postalCode}, ${contact.address.country}`
-    //   );
-    // }
-    // if (contact.labels && contact.labels.length > 0) {
-    //   console.info(`Labels:`);
-    //   contact.labels.forEach((label) => {
-    //     console.info(`- ${label.name} (${label.color})`);
-    //   });
-    // }
   }
 
   function renderContactById(contacts: Contact[]) {
@@ -241,7 +240,9 @@
 
     const lowerCasedInputName = inputName.toLowerCase();
 
-    const foundContacts = contacts.filter((contact) => contact.fullName.toLowerCase().includes(lowerCasedInputName));
+    const foundContacts = contacts.filter((contact) =>
+      contact.fullName.toLowerCase().includes(lowerCasedInputName)
+    );
 
     if (foundContacts.length <= 0) {
       console.info("No contacts found");
@@ -355,10 +356,19 @@
 
     console.info("\nEnter new detail, or leave it blank each to not modify\n");
     const inputContact: InputContact = {
-      fullName: prompt(`Enter Full Name: (${contact?.fullName})`) || contact?.fullName || "",
+      fullName:
+        prompt(`Enter Full Name: (${contact?.fullName})`) ||
+        contact?.fullName ||
+        "",
       email: prompt(`Enter Email: (${contact?.email})`) || contact?.email || "",
-      phoneNumber: prompt(`Enter Phone Number: (${contact?.phoneNumber})`) || contact?.phoneNumber || "",
-      avatarLinkUrl: prompt(`Enter your avatar link url: (${contact?.avatarUrl})`) || contact?.avatarUrl || "",
+      phoneNumber:
+        prompt(`Enter Phone Number: (${contact?.phoneNumber})`) ||
+        contact?.phoneNumber ||
+        "",
+      avatarLinkUrl:
+        prompt(`Enter your avatar link url: (${contact?.avatarUrl})`) ||
+        contact?.avatarUrl ||
+        "",
     };
 
     const updatedContacts = contacts.map((contact) => {
@@ -388,9 +398,10 @@
       return undefined;
     }
 
+    // TODO: Improve, instead of this naive way to calculate age
     const today = new Date();
     const todayYear = today.getFullYear();
-    const birthDateYear = birthDate.getFullYear(); // Notes: Very simple naive way to calculate age
+    const birthDateYear = birthDate.getFullYear();
 
     const age = todayYear - birthDateYear;
     return age;
@@ -411,7 +422,7 @@
     return averageAge;
   }
 
-  // Quiz: Level 12
+  // Only for reference
   function showMainMenu() {
     let running = true;
 
@@ -471,5 +482,4 @@
   }
 
   renderContacts(load());
-  // addContact(load());
 })();
