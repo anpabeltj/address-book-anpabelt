@@ -164,6 +164,13 @@
     });
   }
 
+  function renderContactsCount(contacts: Contact[]) {
+    const contactsCountElement = document.getElementById("contacts-count");
+    if (!contactsCountElement) return;
+
+    contactsCountElement.innerHTML = String(contacts.length);
+  }
+
   function renderContacts(contacts: Contact[]) {
     const contactsListContainerElement =
       document.getElementById("contacts-list");
@@ -481,5 +488,12 @@
     }
   }
 
-  renderContacts(load());
+  function main() {
+    const contacts = load();
+
+    renderContactsCount(contacts);
+    renderContacts(contacts);
+  }
+
+  main();
 })();

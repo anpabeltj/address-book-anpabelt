@@ -19,17 +19,28 @@
     <!-- Main -->
     <main id="site-content" class="flex-[1] m-8 max-w-8xl py-4 px-16 space-y-8">
       <section class="flex justify-between items-center">
-        <h2>Contacts</h2>
+        <h2>
+          <span id="contacts-count"></span>
+          <span>Contacts</span>
+        </h2>
 
         <form id="search-contact" method="get">
           <div class="w-10 w-full flex border-gray-400">
-            <input id="search-input" placeholder="Search here" class="border-2 border-black-400 rounded-md pl-2" type="text" />
+            <input
+              id="search-input"
+              placeholder="Search contacts"
+              class="border-2 border-black-400 rounded-md pl-2"
+              type="text"
+            />
           </div>
         </form>
       </section>
 
       <section>
-        <table id="contacts-list" class="min-w-full text-center table-auto border-collapse border border-gray-300 divide-y divide-gray-300 divide-x rounded-md">
+        <table
+          id="contacts-list"
+          class="min-w-full text-center table-auto border-collapse border border-gray-300 divide-y divide-gray-300 divide-x rounded-md"
+        >
           <thead>
             <th class="bg-gray-600">Full Name</th>
             <th>Email</th>
@@ -60,8 +71,13 @@
     </main>
 
     <!-- Footer -->
-    <footer id="footer" class="bg-gray-600 text-gray-100 bg-gradient-to-t from-retro-950 to-retro-550 flex flex-col relative justify-center text-center items-center mt-20 p-4">
-      <p class="pt-4 text-center">Copyright © 2025 Anpabelt. All rights reserved.</p>
+    <footer
+      id="footer"
+      class="bg-gray-600 text-gray-100 bg-gradient-to-t from-retro-950 to-retro-550 flex flex-col relative justify-center text-center items-center mt-20 p-4"
+    >
+      <p class="pt-4 text-center">
+        Copyright © 2025 Anpabelt. All rights reserved.
+      </p>
     </footer>
 
     <script src="/index.js"></script>
