@@ -17,7 +17,7 @@
     email: string;
     phoneNumber: string;
     address?: Address;
-    avatarLinkUrl: String;
+    avatarLinkUrl: string;
   };
 
   type Address = {
@@ -141,76 +141,73 @@
       return dataContacts;
     }
 
-    return JSON.parse(contacts) as Contact[];
+    const arrayContacts = JSON.parse(contacts) as Contact[];
+
+    const sanitizedContacts = arrayContacts.map((contact) => {
+      if (contact.birthDate) {
+        contact.birthDate = new Date(contact.birthDate);
+      }
+      return contact;
+    });
+
+    return sanitizedContacts;
   }
 
   function displayBirthDate(birthDate?: Date | null) {
     if (!birthDate) {
       return "No birth date";
     }
-    // TODO: Format the birth date to 00 Month 0000
-    return birthDate;
+    return birthDate.toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
   }
 
   function renderContacts(contacts: Contact[]) {
-    const contactsListContainerElement = document.getElementById("contacts-list");
+    const urlParamsString = new URLSearchParams(window.location.search);
+    const query = urlParamsString.get("q");
 
+    const contactsToRender = query ? searchContactByKeyword(contacts, query) : contacts;
+
+    const contactsCountElement = document.getElementById("contacts-count");
+    if (!contactsCountElement) return;
+
+    contactsCountElement.innerHTML = `${contactsToRender.length} ${contactsToRender.length > 1 ? "contacts" : "contact"}`;
+
+    const contactsListContainerElement = document.getElementById("contacts-list");
     if (!contactsListContainerElement) return;
 
     contactsListContainerElement.innerHTML = `
-    <thead>
-      <tr>
-        <th>Full Name</th>
-        <th>Email</th>
-        <th>Phone Number</th>
-        <th>Birth Date</th>
-        <th>Notes</th>
-        <th>Address</th>
-        <th>Labels</th>
-      </tr>
-    </thead>
-    <tbody>
-      ${contacts
-        .map(
-          (contact) => `
-          <tr>
-            <td>${contact.fullName}</td>
-            <td>${contact.email}</td>
-            <td>${contact.phoneNumber}</td>
-            <td>${displayBirthDate(contact.birthDate)}</td>
-            <td>${contact.notes ? contact.notes : ""}</td>
-            <td>${contact.address ? contact.address.street : ""}</td>
-            <td>${contact.labels ? contact.labels.map((label) => `${label.name} (${label.color})`).join(", ") : ""}</td>
-          </tr>
-        `
-        )
-        .join("")}
-    </tbody>
-  `;
-
-    // TODO: Continue to render the rest of the contact details
-
-    // TODO: Transform ul-li into table
-
-    //   console.info(`
-    //     ID: ${contact.id}
-    //     Name: ${contact.fullName}
-    //     Email: ${contact.email}
-    //     Phone Number: ${contact.phoneNumber}
-    //     Avatar: ${contact.avatarUrl}
-    //     Birth Date: ${displayBirthDate(contact.birthDate)}
-    //     Notes: ${contact.notes}`);
-    // if (contact.address) {
-    //   console.info(
-    //     `Address: ${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.postalCode}, ${contact.address.country}`
-    //   );
-    // }
-    // if (contact.labels && contact.labels.length > 0) {
-    //   console.info(`Labels:`);
-    //   contact.labels.forEach((label) => {
-    //     console.info(`- ${label.name} (${label.color})`);
-    //   });
-    // }
+      <thead>
+        <tr>
+          <th>Full Name</th>
+          <th>Email</th>
+          <th>Phone Number</th>
+          <th>Birth Date</th>
+          <th>Notes</th>
+          <th>Address</th>
+          <th>Labels</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${contactsToRender
+          .map(
+            (contact) => `
+            <tr class="border-b border-gray-200 odd:bg-white even:bg-slate-100">
+              <td>${contact.fullName}</td>
+              <td>${contact.email}</td>
+              <td>${contact.phoneNumber}</td>
+              <td>${displayBirthDate(contact.birthDate)}</td>
+              <td>${contact.notes ? contact.notes : ""}</td>
+              <td>${contact.address ? `${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.country}` : ""}</td>
+              <td>${contact.labels ? contact.labels.map((label) => `<span class="text-${label.color}-700">${label.name}</span>`).join(", ") : ""}</td>
+            </tr>
+          `
+          )
+          .join("")}
+      </tbody>
+    `;
   }
 
   function renderContactById(contacts: Contact[]) {
@@ -251,15 +248,8 @@
     renderContacts(foundContacts);
   }
 
-  function searchContactByKeyword(contacts: Contact[]) {
-    const inputKeyword = prompt("Enter Keyword: ");
-
-    if (!inputKeyword) {
-      console.info("Please enter name:");
-
-      return null;
-    }
-    const lowerInputKeyword = inputKeyword.toLowerCase();
+  function searchContactByKeyword(contacts: Contact[], keyword: string) {
+    const lowerInputKeyword = keyword.toLowerCase();
 
     const foundContacts = contacts.filter(
       (contact) =>
@@ -274,10 +264,10 @@
     );
 
     if (foundContacts.length <= 0) {
-      console.info("No contacts found");
-      return null;
+      return [];
     }
-    renderContacts(foundContacts);
+
+    return foundContacts;
   }
 
   function deleteContactById(contacts: Contact[]) {
@@ -285,7 +275,6 @@
 
     if (!inputId) {
       console.info("Please enter ID");
-
       return null;
     }
 
@@ -295,9 +284,10 @@
 
     dataContacts = updatedContacts;
 
-    console.info(`Contact with ID '${id} has been deleted'`);
+    console.info(`Contact with ID '${id}' has been deleted`);
   }
 
+  // Existing addContact function using prompts
   function addContact(contacts: Contact[]) {
     const inputContact: InputContact = {
       fullName: prompt("Enter Full Name:") || "",
@@ -390,7 +380,7 @@
 
     const today = new Date();
     const todayYear = today.getFullYear();
-    const birthDateYear = birthDate.getFullYear(); // Notes: Very simple naive way to calculate age
+    const birthDateYear = birthDate.getFullYear();
 
     const age = todayYear - birthDateYear;
     return age;
@@ -411,7 +401,65 @@
     return averageAge;
   }
 
-  // Quiz: Level 12
+  function initAddContactForm() {
+    const form = document.getElementById("contactForm") as HTMLFormElement | null;
+    if (!form) return console.error("Add Contact form not found.");
+
+    form.addEventListener("submit", (event: Event) => {
+      event.preventDefault();
+
+      const fullName = (document.getElementById("full-name") as HTMLInputElement).value.trim();
+      const email = (document.getElementById("email") as HTMLInputElement).value.trim();
+      const phoneNumber = (document.getElementById("phone-number") as HTMLInputElement).value.trim();
+      const birthDateStr = (document.getElementById("birth-date") as HTMLInputElement).value;
+      const notes = (document.getElementById("notes") as HTMLTextAreaElement).value.trim();
+      const addressStr = (document.getElementById("address") as HTMLInputElement).value.trim();
+      const labelsStr = (document.getElementById("labels") as HTMLInputElement).value.trim();
+
+      const birthDate = birthDateStr ? new Date(birthDateStr) : null;
+
+      const address =
+        addressStr.split(",").map((s) => s.trim()).length >= 5
+          ? {
+              street: addressStr.split(",")[0].trim(),
+              city: addressStr.split(",")[1].trim(),
+              state: addressStr.split(",")[2].trim(),
+              postalCode: addressStr.split(",")[3].trim(),
+              country: addressStr.split(",")[4].trim(),
+            }
+          : undefined;
+
+      const labels = labelsStr
+        ? labelsStr.split(",").map((labelStr) => {
+            const [name, color] = labelStr.split(":").map((s) => s.trim());
+            return { name, color: color || "blue" };
+          })
+        : undefined;
+
+      const newId = dataContacts.length ? Math.max(...dataContacts.map((c) => c.id)) + 1 : 1;
+
+      const newContact: Contact = {
+        id: newId,
+        fullName,
+        email,
+        phoneNumber,
+        birthDate,
+        notes,
+        address,
+        labels,
+        avatarUrl: null,
+        url: null,
+      };
+
+      dataContacts.push(newContact);
+      save(dataContacts);
+      form.reset();
+      renderContacts(dataContacts);
+      console.info("New contact has been added via the form.");
+    });
+  }
+
+  // Only for reference
   function showMainMenu() {
     let running = true;
 
@@ -421,7 +469,7 @@
   1. Display all contacts
   2. Display contact by ID
   3. Search contact by name
-  4. Add new contact
+  4. Add new contact (via prompt)
   5. Update contact
   6. Delete contact
   7. Sort contacts by name
@@ -448,7 +496,7 @@
           searchContactByName(dataContacts);
           break;
         case 4:
-          console.info("You selected: Add new contact.");
+          console.info("You selected: Add new contact (via prompt).");
           addContact(dataContacts);
           break;
         case 5:
@@ -470,6 +518,14 @@
     }
   }
 
-  renderContacts(load());
-  // addContact(load());
+  function main() {
+    const contacts = load();
+    dataContacts = contacts;
+    renderContacts(contacts);
+
+    // Initialize the Add Contact Form handler
+    initAddContactForm();
+  }
+
+  main();
 })();

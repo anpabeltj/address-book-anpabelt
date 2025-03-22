@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create New Contact</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  </head>
+  <body>
+    <header class="p-8 bg-gray-100">
+      <h1>
+        <span>Welcome, </span>
+        <span id="user-fullname">Anpabelt Trah Javala</span>
+      </h1>
+      <ul>
+        <li>
+          <a href="/">Contacts</a>
+        </li>
+        <li>
+          <a href="/new">Create New Contact</a>
+        </li>
+      </ul>
+    </header>
+
+    <main>
+      <h2>Create New Contact</h2>
+
+      <form id="contactForm" method="POST" class="max-w-lg mx-auto p-6">
+        <fieldset class="border border-gray-200 rounded p-8 shadow">
+          <legend class="text-xl font-bold mb-4">Contact Form</legend>
+
+          <div class="mb-4">
+            <label for="full-name" class="block text-gray-700 text-sm font-bold mb-2">Full Name:</label>
+            <input
+              type="text"
+              id="full-name"
+              name="full-name"
+              placeholder="Your full name"
+              required
+              autocomplete="name"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
+
+          <div class="mb-4">
+            <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="you@example.com"
+              required
+              autocomplete="email"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
+
+          <div class="mb-4">
+            <label for="phone-number" class="block text-gray-700 text-sm font-bold mb-2">Phone Number:</label>
+            <input
+              type="tel"
+              id="phone-number"
+              name="phone-number"
+              placeholder="(123) 456-7890"
+              required
+              autocomplete="tel"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
+
+          <div class="mb-4">
+            <label for="birth-date" class="block text-gray-700 text-sm font-bold mb-2">Birth Date:</label>
+            <input type="date" id="birth-date" name="birth-date" required autocomplete="bday" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+          </div>
+
+          <div class="mb-4">
+            <label for="notes" class="block text-gray-700 text-sm font-bold mb-2">Notes:</label>
+            <textarea
+              id="notes"
+              name="notes"
+              placeholder="Enter additional details here..."
+              required
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            ></textarea>
+          </div>
+
+          <div class="mb-4">
+            <label for="address" class="block text-gray-700 text-sm font-bold mb-2">Address:</label>
+            <input
+              type="text"
+              id="address"
+              name="address"
+              placeholder="Street, City, State, Zip"
+              required
+              autocomplete="street-address"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
+
+          <div class="mb-4">
+            <label for="labels" class="block text-gray-700 text-sm font-bold mb-2">Labels:</label>
+            <input type="text" id="labels" name="labels" placeholder="Tags (e.g., friend, work)" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+          </div>
+
+          <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Create Contact</button>
+        </fieldset>
+      </form>
+    </main>
+
+    <script src="/index.js"></script>
+  </body>
+</html>
