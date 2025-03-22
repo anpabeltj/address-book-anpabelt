@@ -15,6 +15,12 @@ bun src/index.ts
 ## Build (Production)
 
 ```sh
+bun build index.ts --outfile=index.js --watch
+```
+
+## Build (Production)
+
+```sh
 bun build index.ts --outfile=index.js
 ```
 

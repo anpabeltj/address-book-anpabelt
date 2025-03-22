@@ -12,6 +12,14 @@
         <span>Welcome, </span>
         <span id="user-fullname">Anpabelt Trah Javala</span>
       </h1>
+      <ul>
+        <li>
+          <a href="/">Contacts</a>
+        </li>
+        <li>
+          <a href="/new">Create New Contact</a>
+        </li>
+      </ul>
     </header>
 
     <!-- Aside -->
@@ -19,11 +27,13 @@
     <!-- Main -->
     <main id="site-content" class="flex-[1] m-8 max-w-8xl py-4 px-16 space-y-8">
       <section class="flex justify-between items-center">
-        <h2>Contacts</h2>
+        <h2 id="contacts-count">
+          <!-- ... -->
+        </h2>
 
         <form id="search-contact" method="get">
           <div class="w-10 w-full flex border-gray-400">
-            <input id="search-input" placeholder="Search here" class="border-2 border-black-400 rounded-md pl-2" type="text" />
+            <input id="search-input" placeholder="Search contacts" class="border-2 border-black-400 rounded-md pl-2" type="text" name="q" />
           </div>
         </form>
       </section>
