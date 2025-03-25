@@ -202,18 +202,18 @@
       ${contactsToRender
         .map(
           (contact) => `
-          <tr class="border-b border-gray-200 odd:bg-white even:bg-slate-100">
-            <td>
+          <tr class="border-b border-gray-500 odd:bg-white even:bg-slate-100 border-collapse">
+            <td class="flex items-center justify-center py-16">
              <img src="${displayAvatarImageUrl(contact)}" class="w-8 h-8 rounded-full" />
             </td>
-            <td>${contact.fullName}</td>
-            <td>${contact.email}</td>
-            <td>${contact.phoneNumber}</td>
-            <td>${displayBirthDate(contact.birthDate)}</td>
-            <td>${contact.notes ? contact.notes : ""}</td>
-            <td>${contact.address ? `${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.country}` : ""}</td>
-            <td>${contact.labels ? contact.labels.map((label) => `<span class="text-${label.color}-700">${label.name}</span>`).join(", ") : ""}</td>
-            <td>
+            <td class="border border-gray-500 py-4 px-8">${contact.fullName}</td>
+            <td class="border border-gray-500 py-4 px-8">${contact.email}</td>
+            <td class="border border-gray-500 py-4 px-8">${contact.phoneNumber}</td>
+            <td class="border border-gray-500 py-4 px-8">${displayBirthDate(contact.birthDate)}</td>
+            <td class="border border-gray-500 py-4 px-8">${contact.notes ? contact.notes : ""}</td>
+            <td class="border border-gray-500 py-4 px-8">${contact.address ? `${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.country}` : ""}</td>
+            <td class="border border-gray-500 py-4 px-8">${contact.labels ? contact.labels.map((label) => `<span class="text-${label.color}-700">${label.name}</span>`).join(", ") : ""}</td>
+            <td class="border border-gray-500 py-4 px-8">
               <a href="/contact/?id=${contact.id}">View</a>
             </td>
           </tr>
