@@ -177,6 +177,13 @@
     });
   }
 
+  function displayAvatarImageUrl(contact: Contact) {
+    if (!contact.avatarUrl) {
+      return `https://api.dicebear.com/9.x/initials/svg?seed=${contact.fullName}`;
+    }
+    return contact.avatarUrl;
+  }
+
   function renderContacts(contacts: Contact[]) {
     const urlParamsString = new URLSearchParams(window.location.search);
     const query = urlParamsString.get("q");
@@ -201,6 +208,11 @@
         .map(
           (contact) => `
           <tr class="border-b border-gray-200 odd:bg-white even:bg-slate-100">
+            <td>
+             <img src="${displayAvatarImageUrl(
+               contact
+             )}" class="w-8 h-8 rounded-full" />
+            </td>
             <td>${contact.fullName}</td>
             <td>${contact.email}</td>
             <td>${contact.phoneNumber}</td>
@@ -235,16 +247,8 @@
     const urlParamsString = new URLSearchParams(window.location.search);
     const id = Number(urlParamsString.get("id"));
 
-    console.log({ id });
-
-    const foundContact = contacts.find((contact) => contact.id === id);
-
-    console.log({ foundContact });
-
-    if (!foundContact) {
-      console.info("No contact found");
-      return null;
-    }
+    const contact = contacts.find((contact) => contact.id === id);
+    if (!contact) return null;
 
     const contactDetailsContainerElement =
       document.getElementById("contact-details");
@@ -252,37 +256,39 @@
 
     contactDetailsContainerElement.innerHTML = `
       <div class="flex items-center justify-between">
-        <h2 class="text-lg font-semibold">${foundContact.fullName}</h2>
-        <a href="/edit/?id=${foundContact.id}" class="text-blue-500">Edit</a>
+        <h2 class="text-lg font-semibold">${contact.fullName}</h2>
+        <a href="/edit/?id=${contact.id}" class="text-blue-500">Edit</a>
       </div>
 
       <div class="flex items-center">
-        <img src="${foundContact.avatarUrl}" class="w-16 h-16 rounded-full" />
+        <img src="${displayAvatarImageUrl(
+          contact
+        )}" class="w-16 h-16 rounded-full" />
         <div class="ml-4">
-          <p>${foundContact.email}</p>
-          <p>${foundContact.phoneNumber}</p>
-          <p>${displayBirthDate(foundContact.birthDate)}</p>
+          <p>${contact.email}</p>
+          <p>${contact.phoneNumber}</p>
+          <p>${displayBirthDate(contact.birthDate)}</p>
         </div>
       </div>
       
       <div>
         <h3 class="text-lg font-semibold">Notes</h3>
-        <p>${foundContact.notes}</p>
+        <p>${contact.notes}</p>
       </div>
       
       <div>
         <h3 class="text-lg font-semibold">Address</h3>
-        <p>${foundContact.address?.street}, ${foundContact.address?.city}, ${
-      foundContact.address?.state
-    }, ${foundContact.address?.country}</p>
+        <p>${contact.address?.street}, ${contact.address?.city}, ${
+      contact.address?.state
+    }, ${contact.address?.country}</p>
       </div>
 
       <div>
         <h3 class="text-lg font-semibold">Labels</h3>
         <p>
           ${
-            foundContact?.labels &&
-            foundContact.labels
+            contact?.labels &&
+            contact.labels
               .map(
                 (label) =>
                   `<span class="text-${label.color}-700">${label.name}</span>`
