@@ -197,66 +197,101 @@
     if (!contactsListContainerElement) return;
 
     contactsListContainerElement.innerHTML = `
-      <thead>
-        <tr>
-          <th>Full Name</th>
-          <th>Email</th>
-          <th>Phone Number</th>
-          <th>Birth Date</th>
-          <th>Notes</th>
-          <th>Address</th>
-          <th>Labels</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${contactsToRender
-          .map(
-            (contact) => `
-            <tr class="border-b border-gray-200 odd:bg-white even:bg-slate-100">
-              <td>${contact.fullName}</td>
-              <td>${contact.email}</td>
-              <td>${contact.phoneNumber}</td>
-              <td>${displayBirthDate(contact.birthDate)}</td>
-              <td>${contact.notes ? contact.notes : ""}</td>
-              <td>${
-                contact.address
-                  ? `${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.country}`
-                  : ""
-              }</td>
-              <td>${
-                contact.labels
-                  ? contact.labels
-                      .map(
-                        (label) =>
-                          `<span class="text-${label.color}-700">${label.name}</span>`
-                      )
-                      .join(", ")
-                  : ""
-              }</td>
-            </tr>
-          `
-          )
-          .join("")}
-      </tbody>
+      ${contactsToRender
+        .map(
+          (contact) => `
+          <tr class="border-b border-gray-200 odd:bg-white even:bg-slate-100">
+            <td>${contact.fullName}</td>
+            <td>${contact.email}</td>
+            <td>${contact.phoneNumber}</td>
+            <td>${displayBirthDate(contact.birthDate)}</td>
+            <td>${contact.notes ? contact.notes : ""}</td>
+            <td>${
+              contact.address
+                ? `${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.country}`
+                : ""
+            }</td>
+            <td>${
+              contact.labels
+                ? contact.labels
+                    .map(
+                      (label) =>
+                        `<span class="text-${label.color}-700">${label.name}</span>`
+                    )
+                    .join(", ")
+                : ""
+            }</td>
+            <td>
+              <a href="/contact/?id=${contact.id}">View</a>
+            </td>
+          </tr>
+        `
+        )
+        .join("")}
     `;
   }
 
-  function renderContactById(contacts: Contact[]) {
-    const inputId = prompt("\nEnter contact ID to display:");
+  function renderContactById(contacts: Contact[], element: HTMLElement) {
+    const urlParamsString = new URLSearchParams(window.location.search);
+    const id = Number(urlParamsString.get("id"));
 
-    if (!inputId) {
-      console.info("Please enter ID");
-      return null;
-    }
-
-    const id = parseInt(inputId);
+    console.log({ id });
 
     const foundContact = contacts.find((contact) => contact.id === id);
+
+    console.log({ foundContact });
 
     if (!foundContact) {
       console.info("No contact found");
       return null;
     }
+
+    const contactDetailsContainerElement =
+      document.getElementById("contact-details");
+    if (!contactDetailsContainerElement) return;
+
+    contactDetailsContainerElement.innerHTML = `
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-semibold">${foundContact.fullName}</h2>
+        <a href="/edit/?id=${foundContact.id}" class="text-blue-500">Edit</a>
+      </div>
+
+      <div class="flex items-center">
+        <img src="${foundContact.avatarUrl}" class="w-16 h-16 rounded-full" />
+        <div class="ml-4">
+          <p>${foundContact.email}</p>
+          <p>${foundContact.phoneNumber}</p>
+          <p>${displayBirthDate(foundContact.birthDate)}</p>
+        </div>
+      </div>
+      
+      <div>
+        <h3 class="text-lg font-semibold">Notes</h3>
+        <p>${foundContact.notes}</p>
+      </div>
+      
+      <div>
+        <h3 class="text-lg font-semibold">Address</h3>
+        <p>${foundContact.address?.street}, ${foundContact.address?.city}, ${
+      foundContact.address?.state
+    }, ${foundContact.address?.country}</p>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-semibold">Labels</h3>
+        <p>
+          ${
+            foundContact?.labels &&
+            foundContact.labels
+              .map(
+                (label) =>
+                  `<span class="text-${label.color}-700">${label.name}</span>`
+              )
+              .join(", ")
+          }
+        </p>
+      </div>
+    `;
   }
 
   function searchContactByName(contacts: Contact[]) {
@@ -420,6 +455,10 @@
     "contactForm"
   ) as HTMLFormElement | null;
 
+  const contactDetailsElement = document.getElementById(
+    "contact-details"
+  ) as HTMLElement | null;
+
   function main() {
     const contacts = load();
     dataContacts = contacts;
@@ -431,6 +470,10 @@
         "submit",
         handleSubmitAddNewContactForm
       );
+    }
+
+    if (contactDetailsElement) {
+      renderContactById(contacts, contactDetailsElement);
     }
   }
 
