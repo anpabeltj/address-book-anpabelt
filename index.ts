@@ -215,7 +215,9 @@
             <td class="border border-gray-500 py-4 px-8">${contact.labels ? contact.labels.map((label) => `<span class="text-${label.color}-700">${label.name}</span>`).join(", ") : ""}</td>
             <td class="border border-gray-500 py-4 px-8">
               <a href="/contact/?id=${contact.id}">View</a>
+              <a href="#" onclick="deleteContact('${contact.id}'); return false;">Delete</a>
             </td>
+            
           </tr>
         `
         )
@@ -408,6 +410,32 @@
     save(dataContacts);
     eventTarget.reset();
   }
+
+  // Delete contact function logic using an inline click event
+  function deleteContact(contactId: string): void {
+    const confirmation = window.confirm("Are you sure you want to delete this contact?\n\nThis action cannot be undone and the contact will be permanently removed from your contacts list.");
+    if (!confirmation) return;
+
+    // Remove the contact from the global contacts array
+    dataContacts = dataContacts.filter((contact) => contact.id !== parseInt(contactId));
+
+    // Save the updated contacts to localStorage
+    save(dataContacts);
+
+    // Re-render the contacts list with the updated array
+    renderContacts(dataContacts);
+
+    // Display a notification that the contact was deleted
+    alert("Contact deletion complete! The selected contact has been removed from your contacts list.");
+  }
+
+  // Make sure the deleteContact function is globally accessible
+  (window as any).deleteContact = deleteContact;
+
+  // Example initial render call on page load
+  document.addEventListener("DOMContentLoaded", () => {
+    renderContacts(dataContacts);
+  });
 
   const addNewContactForm = document.getElementById("contactForm") as HTMLFormElement | null;
 
