@@ -93,6 +93,35 @@
             <legend>Address</legend>
 
             <section class="space-y-2">
+              <!-- Country -->
+              <label for="address-country" class="block text-gray-700 text-sm font-bold"> Country:</label>
+              <input
+                type="text"
+                id="address-country"
+                name="address-country"
+                placeholder="Country"
+                required
+                autocomplete="country-name"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </section>
+
+            <section class="space-y-2">
+              <!-- State -->
+              <label for="address-state" class="block text-gray-700 text-sm font-bold"> State:</label>
+              <input
+                type="text"
+                id="address-state"
+                name="address-state"
+                placeholder="State"
+                required
+                autocomplete="address-level1"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </section>
+
+            <section class="space-y-2">
+              <!-- Street -->
               <label for="address-street" class="block text-gray-700 text-sm font-bold"> Street:</label>
               <input
                 type="text"
@@ -115,6 +144,19 @@
                 placeholder="City"
                 required
                 autocomplete="address-level2"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </section>
+
+            <section class="space-y-2">
+              <label for="address-postal-code" class="block text -gray-700 text-sm font-bold"> Postal Code:</label>
+              <input
+                type="text"
+                id="address-postal-code"
+                name="address-postal-code"
+                placeholder="Postal Code"
+                required
+                autocomplete="postal-code"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
             </section>
