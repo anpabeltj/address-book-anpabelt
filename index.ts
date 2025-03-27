@@ -236,35 +236,39 @@
     if (!contactDetailsContainerElement) return;
 
     contactDetailsContainerElement.innerHTML = `
-      <div class="flex items-center justify-between">
-        <h2 class="text-lg font-semibold">${contact.fullName}</h2>
-        <a href="/edit/?id=${contact.id}" class="text-blue-500">Edit</a>
+      <div class="bg-white rounded-lg shadow-md p-6 max-w-2xl mx-auto">
+      <div class="flex items-center justify-between border-b pb-4 mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">${contact.fullName}</h2>
+        <a href="/edit/?id=${contact.id}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors">Edit</a>
       </div>
 
-      <div class="flex items-center">
-        <img src="${displayAvatarImageUrl(contact)}" class="w-16 h-16 rounded-full" />
-        <div class="ml-4">
-          <p>${contact.email}</p>
-          <p>${contact.phoneNumber}</p>
-          <p>${displayBirthDate(contact.birthDate)}</p>
+      <div class="flex items-start space-x-6 mb-8">
+        <img src="${displayAvatarImageUrl(contact)}" class="w-24 h-24 rounded-full shadow-lg" />
+        <div class="space-y-2">
+        <p class="text-gray-600"><span class="font-medium">Email:</span> ${contact.email}</p>
+        <p class="text-gray-600"><span class="font-medium">Phone:</span> ${contact.phoneNumber}</p>
+        <p class="text-gray-600"><span class="font-medium">Birthday:</span> ${displayBirthDate(contact.birthDate)}</p>
         </div>
       </div>
       
-      <div>
-        <h3 class="text-lg font-semibold">Notes</h3>
-        <p>${contact.notes}</p>
+      <div class="mb-6">
+        <h3 class="text-xl font-semibold text-gray-800 mb-2">Notes</h3>
+        <p class="text-gray-600 bg-gray-50 p-4 rounded-md">${contact.notes || "No notes available"}</p>
       </div>
       
-      <div>
-        <h3 class="text-lg font-semibold">Address</h3>
-        <p>${contact.address?.street}, ${contact.address?.city}, ${contact.address?.state}, ${contact.address?.country}</p>
+      <div class="mb-6">
+        <h3 class="text-xl font-semibold text-gray-800 mb-2">Address</h3>
+        <p class="text-gray-600 bg-gray-50 p-4 rounded-md">
+        ${contact.address ? `${contact.address.street}, ${contact.address.city}, ${contact.address.state}, ${contact.address.country}` : "No address available"}
+        </p>
       </div>
 
       <div>
-        <h3 class="text-lg font-semibold">Labels</h3>
-        <p>
-          ${contact?.labels && contact.labels.map((label) => `<span class="text-${label.color}-700">${label.name}</span>`).join(", ")}
-        </p>
+        <h3 class="text-xl font-semibold text-gray-800 mb-2">Labels</h3>
+        <div class="flex flex-wrap gap-2">
+        ${contact?.labels ? contact.labels.map((label) => `<span class="px-3 py-1 rounded-full text-sm bg-${label.color}-100 text-${label.color}-700">${label.name}</span>`).join("") : "No labels"}
+        </div>
+      </div>
       </div>
     `;
   }
